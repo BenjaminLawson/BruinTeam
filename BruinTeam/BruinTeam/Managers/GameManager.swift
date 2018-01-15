@@ -22,7 +22,7 @@ class GameManager {
     
     // Host vars
     var allGameControlStates: [(control: Control, state: Any?)]?
-    var outstandingInstructions: [(control: Control, state: Any?)]?
+    var outstandingInstructions: [(controlID: Control, state: Any?)]?
     
     init(serviceManager: DiscoveryServiceManager, isHost: Bool) {
         self.serviceManager = serviceManager
@@ -48,7 +48,7 @@ class GameManager {
         let shuffled: [Control] = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: Controls.controls) as! [Control]
         
         // send peers starting controls
-        let numControlsPerPlayer = 2
+        let numControlsPerPlayer = 3
          for index in 0..<serviceManager.session.connectedPeers.count {
             let peer: MCPeerID = serviceManager.session.connectedPeers[index]
             let start = index * numControlsPerPlayer
@@ -63,38 +63,35 @@ class GameManager {
         let end = start + numControlsPerPlayer
         self.controls = Array(shuffled[start..<end]) // temp
         
-        // TODO: fix this hack
-        //DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
-            // save current game controls
-            let numControlsUsed = numControlsPerPlayer * (1 + self.serviceManager.session.connectedPeers.count)
-            let allGameControls = Array(shuffled[0..<numControlsUsed])
-            self.allGameControlStates = allGameControls.map({ control in
-                switch control.controlType {
-                case .toggle:
-                    return (control, false)
-                case .segmentedControl:
-                    return (control, 0)
-                case .button:
-                    return (control, nil)
-                case .slider:
-                    // TODO
-                    return (control, 0)
-                }
-            })
-            
-            // TODO: save instructions
-            // give peers commands
-            for peer in self.serviceManager.session.connectedPeers {
-                let instruction = self.generateInstruction()
-                print("generated peer instruction: \(instruction)")
-                self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+        // save current game controls
+        let numControlsUsed = numControlsPerPlayer * (1 + self.serviceManager.session.connectedPeers.count)
+        let allGameControls = Array(shuffled[0..<numControlsUsed])
+        self.allGameControlStates = allGameControls.map({ control in
+            switch control.controlType {
+            case .toggle:
+                return (control, false)
+            case .segmentedControl:
+                return (control, 0)
+            case .button:
+                return (control, nil)
+            case .slider:
+                // TODO
+                return (control, 0)
             }
-            
-            // give host a command
-            let hostInstruction = self.generateInstruction()
-            print("generated host instruction: \(hostInstruction)")
-            self.delegate?.commandChanged(command: hostInstruction)
-        //}
+        })
+        
+        // TODO: save instructions
+        // give peers commands
+        for peer in self.serviceManager.session.connectedPeers {
+            let instruction = self.generateInstruction()
+            print("generated peer instruction: \(instruction)")
+            self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+        }
+        
+        // give host a command
+        let hostInstruction = self.generateInstruction()
+        print("generated host instruction: \(hostInstruction)")
+        self.delegate?.commandChanged(command: hostInstruction)
         
     }
     

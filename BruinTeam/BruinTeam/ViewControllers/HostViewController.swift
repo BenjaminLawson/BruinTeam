@@ -19,26 +19,18 @@ class HostViewController: UIViewController {
     }
 
     @IBAction func startButtonTouched(_ sender: Any) {
-        let gameManager = GameManager(serviceManager: serviceManager, isHost: true)
-        
         let gameViewController: GameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "gameViewController") as! GameViewController
+        let _ = gameViewController.view // hack to force view hierarchy to load now
+        
+        let gameManager = GameManager(serviceManager: serviceManager, isHost: true)
         gameViewController.serviceManager = serviceManager
         gameViewController.gameManager = gameManager
-        
+        gameManager.delegate = gameViewController
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.pushViewController(gameViewController, animated: true)
         
         gameManager.startGame()
-        gameManager.delegate = gameViewController
-        
-        
-        
-        // serviceManager.sendToAll(data: <#T##Data#>)
-        // pick (# peers) * 5 random controls, send 5 controls to each peer
-        //let shuffled = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: Controls.controls)
-        //serviceManager.send(event: .startGame, withObject: nil, toPeers: serviceManager.session.connectedPeers)
-        
     }
 }
 

@@ -26,21 +26,17 @@ extension ClientViewController: DiscoveryServiceManagerDelegate {
         print("data event: \(event as! String)")
         if event as! String == Event.startGame.rawValue {
             DispatchQueue.main.async {
-                print("received start event")
-                let gameManager = GameManager(serviceManager: self.serviceManager, isHost: false)
-                
                 let gameViewController: GameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "gameViewController") as! GameViewController
+                let _ = gameViewController.view // hack to force view hierarchy to load now
+                
                 gameViewController.serviceManager = self.serviceManager
+                let gameManager = GameManager(serviceManager: self.serviceManager, isHost: false)
                 gameViewController.gameManager = gameManager
-                
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
-                self.navigationController?.pushViewController(gameViewController, animated: true)
-                
-                
                 gameManager.controls = controls.map({ Controls.controls[$0] })
                 gameManager.delegate = gameViewController
                 
-                
+                self.navigationController?.setNavigationBarHidden(true, animated: true)
+                self.navigationController?.pushViewController(gameViewController, animated: true)
             }
         }
     }

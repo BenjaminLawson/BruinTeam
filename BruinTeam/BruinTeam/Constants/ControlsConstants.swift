@@ -6,6 +6,7 @@ struct Controls {
         Control(uid: 3, controlType: .button, title: "Boelter 3400", possibleValues: "Find"),
         Control(uid: 4, controlType: .button, title: "CS M117", possibleValues: "Enroll in"),
         Control(uid: 5, controlType: .button, title: "Eggert late policy", possibleValues: "Abuse"),
-        Control(uid: 6, controlType: .toggle, title: "Stupid Bugs", possibleValues: nil)
+        Control(uid: 6, controlType: .toggle, title: "Stupid Bugs", possibleValues: nil),
+        Control(uid: 7, controlType: .button, title: "C++", possibleValues: "Compile")
     ]
 }

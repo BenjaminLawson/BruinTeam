@@ -35,7 +35,8 @@ class GameViewController: UIViewController {
         switch controlModel.controlType {
         case .toggle:
             print("making toggle control for \(controlModel.title)")
-            controlView.genericControl = UISwitch()
+            let controlSwitch = UISwitch()
+            controlView.genericControl = controlSwitch
         case .segmentedControl:
             print("making segmented control for \(controlModel.title)")
             let segmentedControl = UISegmentedControl(items: controlModel.possibleValues as? [Any])
@@ -47,16 +48,34 @@ class GameViewController: UIViewController {
             button.setTitle(controlModel.possibleValues as? String, for: .normal)
             button.sizeToFit()
             controlView.genericControl = button
+            button.addTarget(self, action: #selector(controlValueChanged(sender:)), for: .touchUpInside) // value doesn't change, listen for touch
         case .slider:
             // TODO
             print("making slider control for \(controlModel.title)")
             controlView.genericControl = UISlider()
         }
         
+        controlView.genericControl?.tag = controlModel.uid
+        controlView.genericControl?.addTarget(self, action: #selector(controlValueChanged(sender:)), for: .valueChanged)
+        
         return controlView
     }
     
-    
+    @objc func controlValueChanged(sender: UIControl) {
+        print("control \(sender.tag) value changed")
+        if let control = sender as? UISwitch {
+            print("switch control")
+        }
+        else if let control = sender as? UISegmentedControl {
+            print("segmented control")
+        }
+        else if let control = sender as? UIButton {
+            print("button press")
+        }
+        else if let control = sender as? UISlider {
+            print("slider control")
+        }
+    }
 }
 
 extension GameViewController: GameManagerDelegate {
