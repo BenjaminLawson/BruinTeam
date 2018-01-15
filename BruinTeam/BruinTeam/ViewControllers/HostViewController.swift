@@ -1,5 +1,6 @@
 import UIKit
 import MultipeerConnectivity
+import GameKit
 
 class HostViewController: UIViewController {
     
@@ -13,20 +14,47 @@ class HostViewController: UIViewController {
         connectionsTableView.dataSource = self
         connectionsTableView.delegate = self
 
-        serviceManager.browserDelegate = self
+        serviceManager.delegate = self
         serviceManager.startBrowsing()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func startButtonTouched(_ sender: Any) {
+        let gameManager = GameManager(serviceManager: serviceManager, isHost: true)
+        
+        let gameViewController: GameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "gameViewController") as! GameViewController
+        gameViewController.serviceManager = serviceManager
+        gameViewController.gameManager = gameManager
+        
+        
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        navigationController?.pushViewController(gameViewController, animated: true)
+        
+        gameManager.startGame()
+        gameManager.delegate = gameViewController
+        
+        
+        
+        // serviceManager.sendToAll(data: <#T##Data#>)
+        // pick (# peers) * 5 random controls, send 5 controls to each peer
+        //let shuffled = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: Controls.controls)
+        //serviceManager.send(event: .startGame, withObject: nil, toPeers: serviceManager.session.connectedPeers)
+        
     }
-
 }
+
+
 
 // MARK: DiscoveryServiceManagerBrowserDelegate
 
-extension HostViewController: DiscoveryServiceManagerBrowserDelegate {
+extension HostViewController: DiscoveryServiceManagerDelegate {
+    func receivedData(data: Data, fromPeer peer: MCPeerID) {
+        
+    }
+    
+    func receivedInvite(peerID: MCPeerID, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        print("ignoring invite from \(peerID)")
+    }
+    
     func foundPeer(peerID: MCPeerID) {
         serviceManager.invitePeer(peerID: peerID)
     }

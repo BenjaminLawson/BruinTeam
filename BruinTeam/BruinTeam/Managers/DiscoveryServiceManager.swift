@@ -1,14 +1,11 @@
 import Foundation
 import MultipeerConnectivity
 
-protocol DiscoveryServiceManagerAdvertiserDelegate {
+protocol DiscoveryServiceManagerDelegate {
+    func foundPeer(peerID: MCPeerID)
     func receivedInvite(peerID: MCPeerID, invitationHandler: @escaping (Bool, MCSession?) -> Void)
     func peerChangedState(peerID: MCPeerID, state: MCSessionState)
-}
-
-protocol DiscoveryServiceManagerBrowserDelegate {
-    func foundPeer(peerID: MCPeerID)
-    func peerChangedState(peerID: MCPeerID, state: MCSessionState)
+    func receivedData(data: Data, fromPeer peer: MCPeerID)
 }
 
 class DiscoveryServiceManager: NSObject {
@@ -18,11 +15,10 @@ class DiscoveryServiceManager: NSObject {
     let serviceAdvertiser: MCNearbyServiceAdvertiser
     let serviceBrowser: MCNearbyServiceBrowser
     
-    var advertiserDelegate: DiscoveryServiceManagerAdvertiserDelegate?
-    var browserDelegate: DiscoveryServiceManagerBrowserDelegate?
+    var delegate: DiscoveryServiceManagerDelegate?
     
     lazy var session: MCSession = {
-        let session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .optional)
+        let session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .none)
         session.delegate = self
         return session
     }()
@@ -55,7 +51,23 @@ class DiscoveryServiceManager: NSObject {
         serviceBrowser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
     }
     
-    
+    public func send(event: Event, withObject object: AnyObject? = nil, toPeers peers: [MCPeerID]) {
+        if peers.count == 0 {
+            return
+        }
+        
+        var rootDictionary: [String: Any] = ["event": event.rawValue]
+        if let obj = object {
+            rootDictionary["object"] = obj
+        }
+        let data = NSKeyedArchiver.archivedData(withRootObject: rootDictionary)
+        do {
+            try self.session.send(data, toPeers: session.connectedPeers, with: .reliable)
+        }
+        catch let error {
+            print("Error sending to all peers: \(error)")
+        }
+    }
 }
 
 // MARK: MCNearbyServiceAdvertiserDelegate
@@ -68,7 +80,7 @@ extension DiscoveryServiceManager: MCNearbyServiceAdvertiserDelegate {
     func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
         print("didReceiveInvitationFromPeer: \(peerID)")
         
-        self.advertiserDelegate?.receivedInvite(peerID: peerID, invitationHandler: invitationHandler)
+        delegate?.receivedInvite(peerID: peerID, invitationHandler: invitationHandler)
     }
 }
 
@@ -82,7 +94,7 @@ extension DiscoveryServiceManager: MCNearbyServiceBrowserDelegate {
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         print("foundPeer: \(peerID)")
         
-        self.browserDelegate?.foundPeer(peerID: peerID)
+        delegate?.foundPeer(peerID: peerID)
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
@@ -96,12 +108,12 @@ extension DiscoveryServiceManager: MCSessionDelegate {
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         print("peer \(peerID) didChangeState: \(state.rawValue)")
         
-        browserDelegate?.peerChangedState(peerID: peerID, state: state)
-        advertiserDelegate?.peerChangedState(peerID: peerID, state: state)
+        delegate?.peerChangedState(peerID: peerID, state: state)
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         print("didReceiveData: \(data)")
+        delegate?.receivedData(data: data, fromPeer: peerID)
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {

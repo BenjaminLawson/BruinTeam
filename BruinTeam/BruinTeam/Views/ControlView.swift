@@ -24,8 +24,6 @@ class ControlView: UIView {
     }
     
     private func commonInit() {
-        print("ControlView Init")
-        
         Bundle.main.loadNibNamed("ControlView", owner: self, options: nil)
         addSubview(contentView)
         contentView.frame = self.bounds

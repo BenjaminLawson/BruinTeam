@@ -28,7 +28,6 @@
                         <constraint firstAttribute="height" constant="20" id="6dS-B2-6OD"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G62-bE-DeQ">
@@ -36,7 +35,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="G62-bE-DeQ" firstAttribute="top" secondItem="sU9-Qf-bK2" secondAttribute="bottom" id="6Ad-Do-RiA"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="G62-bE-DeQ" secondAttribute="trailing" id="A5b-uW-1tC"/>
