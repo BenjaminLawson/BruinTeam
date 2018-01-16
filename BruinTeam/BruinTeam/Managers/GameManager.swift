@@ -10,6 +10,7 @@ class GameManager {
     let serviceManager: DiscoveryServiceManager
     var gpa: Float
     var isHost = false
+    // this player's controls
     var controls: [Control]? {
         didSet {
             if let controls = self.controls {
@@ -20,6 +21,8 @@ class GameManager {
     
     var delegate: GameManagerDelegate?
     
+    var instructionManager: InstructionManager
+    
     // Host vars
     var allGameControlStates: [(control: Control, state: Any?)]?
     var outstandingInstructions: [(controlID: Control, state: Any?)]?
@@ -27,7 +30,9 @@ class GameManager {
     init(serviceManager: DiscoveryServiceManager, isHost: Bool) {
         self.serviceManager = serviceManager
         self.isHost = isHost
-        gpa = 4.0
+        self.gpa = 3.0
+        
+        self.instructionManager = InstructionManager(nPlayers: serviceManager.session.connectedPeers.count + 1)
         
         self.serviceManager.delegate = self
     }
@@ -43,81 +48,34 @@ class GameManager {
     }
     
     // MARK: Host Functions
+    
     func startGame() {
-        // GameKit has built in shuffling method, how convenient!
-        let shuffled: [Control] = GKRandomSource.sharedRandom().arrayByShufflingObjects(in: Controls.controls) as! [Control]
-        
         // send peers starting controls
-        let numControlsPerPlayer = 3
          for index in 0..<serviceManager.session.connectedPeers.count {
             let peer: MCPeerID = serviceManager.session.connectedPeers[index]
-            let start = index * numControlsPerPlayer
-            let end = start + numControlsPerPlayer
-            let peerControls: [Int] = shuffled[start..<end].map({ $0.uid }) // temp
+            let peerControls: [Int] = instructionManager.controls(forPeerNumber: index)
             serviceManager.send(event: .startGame, withObject: peerControls as AnyObject, toPeers: [peer])
          }
         
-        
         // give host starting controls
-        let start = serviceManager.session.connectedPeers.count * numControlsPerPlayer
-        let end = start + numControlsPerPlayer
-        self.controls = Array(shuffled[start..<end]) // temp
+        self.controls = instructionManager.controls(forPeerNumber: serviceManager.session.connectedPeers.count).map({ Controls.controls[$0] })
         
-        // save current game controls
-        let numControlsUsed = numControlsPerPlayer * (1 + self.serviceManager.session.connectedPeers.count)
-        let allGameControls = Array(shuffled[0..<numControlsUsed])
-        self.allGameControlStates = allGameControls.map({ control in
-            switch control.controlType {
-            case .toggle:
-                return (control, false)
-            case .segmentedControl:
-                return (control, 0)
-            case .button:
-                return (control, nil)
-            case .slider:
-                // TODO
-                return (control, 0)
-            }
-        })
         
         // TODO: save instructions
         // give peers commands
-        for peer in self.serviceManager.session.connectedPeers {
-            let instruction = self.generateInstruction()
+        for peer in serviceManager.session.connectedPeers {
+            let instruction = instructionManager.generateInstruction()
             print("generated peer instruction: \(instruction)")
-            self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+            serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
         }
         
         // give host a command
-        let hostInstruction = self.generateInstruction()
+        let hostInstruction = instructionManager.generateInstruction()
+        
         print("generated host instruction: \(hostInstruction)")
         self.delegate?.commandChanged(command: hostInstruction)
         
     }
-    
-    func generateInstruction() -> String {
-        if let controlPairs = self.allGameControlStates {
-            let randomIndex = Int(arc4random_uniform(UInt32(controlPairs.count)))
-            let randomPair = controlPairs[randomIndex]
-            let control = randomPair.control
-            switch control.controlType {
-            case .toggle:
-                let newState = !(randomPair.state as! Bool)
-                if newState {
-                    return "Enable \(control.title)"
-                }
-                return "Disable \(control.title)"
-            case .segmentedControl:
-                return "TODO: segmented \(control.title)" // TODO
-            case .button:
-                return "\(control.possibleValues as! String) \(control.title)"
-            case .slider:
-                return "TODO: slider \(control.title)" // TODO
-            }
-        }
-        return "Error" // temp
-    }
-    
     
 }
 

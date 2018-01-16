@@ -25,6 +25,7 @@ extension ClientViewController: DiscoveryServiceManagerDelegate {
         }
         print("data event: \(event as! String)")
         if event as! String == Event.startGame.rawValue {
+            // TODO: fix this race condition
             DispatchQueue.main.async {
                 let gameViewController: GameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "gameViewController") as! GameViewController
                 let _ = gameViewController.view // hack to force view hierarchy to load now
@@ -32,8 +33,9 @@ extension ClientViewController: DiscoveryServiceManagerDelegate {
                 gameViewController.serviceManager = self.serviceManager
                 let gameManager = GameManager(serviceManager: self.serviceManager, isHost: false)
                 gameViewController.gameManager = gameManager
-                gameManager.controls = controls.map({ Controls.controls[$0] })
                 gameManager.delegate = gameViewController
+                gameManager.controls = controls.map({ Controls.controls[$0] })
+                
                 
                 self.navigationController?.setNavigationBarHidden(true, animated: true)
                 self.navigationController?.pushViewController(gameViewController, animated: true)

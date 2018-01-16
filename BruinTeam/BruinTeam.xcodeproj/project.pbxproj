@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B55F581A200DA2540008A9AF /* InstructionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F5819200DA2540008A9AF /* InstructionManager.swift */; };
 		B5790350200B1FEE005A3C9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B579034F200B1FEE005A3C9B /* AppDelegate.swift */; };
 		B5790352200B1FEE005A3C9B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5790351200B1FEE005A3C9B /* HomeViewController.swift */; };
 		B5790355200B1FEE005A3C9B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5790353200B1FEE005A3C9B /* LaunchScreen.storyboard */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B55F5819200DA2540008A9AF /* InstructionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionManager.swift; sourceTree = "<group>"; };
 		B579034C200B1FEE005A3C9B /* BruinTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BruinTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B579034F200B1FEE005A3C9B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B5790351200B1FEE005A3C9B /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			children = (
 				B579036D200B347D005A3C9B /* DiscoveryServiceManager.swift */,
 				B5E0357E200C2DC90043DAB7 /* GameManager.swift */,
+				B55F5819200DA2540008A9AF /* InstructionManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 				B5E0357F200C2DC90043DAB7 /* GameManager.swift in Sources */,
 				B5E03575200C0EBA0043DAB7 /* ControlsConstants.swift in Sources */,
 				B5790352200B1FEE005A3C9B /* HomeViewController.swift in Sources */,
+				B55F581A200DA2540008A9AF /* InstructionManager.swift in Sources */,
 				B5E0357A200C1E200043DAB7 /* EventConstants.swift in Sources */,
 				B5790350200B1FEE005A3C9B /* AppDelegate.swift in Sources */,
 				B5790368200B2A72005A3C9B /* ClientViewController.swift in Sources */,

@@ -6,5 +6,4 @@ enum Event: String {
     case gpaUpdate = "GPAUpdate"
     case controlState = "ControlState"
     case newInstruction = "NewInstruction"
-    //case initialControls = "InitialControls"
 }
