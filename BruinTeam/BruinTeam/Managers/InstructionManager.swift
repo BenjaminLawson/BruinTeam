@@ -16,11 +16,12 @@ import GameKit
 class ControlState {
     var ownedBy: MCPeerID
     var state: Int
-    var pendingInstructions = [(value: Int, peer: MCPeerID)]() // state : peer
+    var pendingInstruction: (value: Int, peer: MCPeerID)? // state : peer
     
     init(state: Int, ownedBy owner: MCPeerID) {
         self.state = state
         self.ownedBy = owner
+        self.pendingInstruction = nil
     }
 }
 
@@ -52,12 +53,12 @@ class InstructionManager {
         for (i, peer) in session.connectedPeers.enumerated() {
             let start = i * nControlsPerPlayer
             let end = start + nControlsPerPlayer
-            for i in start..<end {
-                let uid = gameControls[i].uid
+            for j in start..<end {
+                let uid = gameControls[j].uid
                 controlStates[uid] = ControlState(state: 0, ownedBy: peer)
             }
         }
-        let hostStart = session.connectedPeers.count
+        let hostStart = session.connectedPeers.count * nControlsPerPlayer
         let hostEnd = hostStart + nControlsPerPlayer
         for i in hostStart..<hostEnd {
             let uid = gameControls[i].uid
@@ -65,19 +66,20 @@ class InstructionManager {
         }
     }
     
-    func controls(forPeerNumber peer: MCPeerID) -> [Int] {
+    func controls(forPeer peer: MCPeerID) -> [Int] {
         return controlStates.filter({ $0.value.ownedBy == peer }).map({ $0.key })
     }
     
     func registerInstruction(uid: Int, value: Int, peer: MCPeerID) {
-        controlStates[uid]?.pendingInstructions.append((value: value, peer: peer))
+        controlStates[uid]?.pendingInstruction = (value: value, peer: peer)
     }
     
     // generate instruction string & register instruction
-    // TODO: don't generate duplicate instructions unless button?
     func generateInstruction(forPeer peer: MCPeerID) -> String {
-        let randomIndex = Int(arc4random_uniform(UInt32(gameControls.count)))
-        let control = gameControls[randomIndex]
+        // only pick from controls without pending instructions
+        let unusedControls = controlStates.filter({ $0.value.pendingInstruction == nil })
+        let randomIndex = Int(arc4random_uniform(UInt32(unusedControls.count)))
+        let control: Control = Controls.controls[Array(unusedControls.keys)[randomIndex]]
         let state = controlStates[control.uid]!.state
         
         var instruction = "Error"
@@ -120,16 +122,13 @@ class InstructionManager {
         
         controlState.state = newValue
         
-        if let index = controlState.pendingInstructions.index(where: { $0.value == newValue && $0.peer == peer }) {
-            // was a pending command
-            let instructionOwner = controlState.pendingInstructions[index].peer
-            controlState.pendingInstructions.remove(at: index)
+        if let pendingInstruction = controlState.pendingInstruction {
+            let instructionOwner = pendingInstruction.peer
+            controlState.pendingInstruction = nil
             return instructionOwner
         }
-        else {
-            // was NOT a pending command
-            return nil
-        }
+        
+        return nil
     }
     
     static func stateDictFromUIControl(control: UIControl) -> [String: Int] {

@@ -65,7 +65,7 @@ class DiscoveryServiceManager: NSObject {
             try self.session.send(data, toPeers: session.connectedPeers, with: .reliable)
         }
         catch let error {
-            print("Error sending to all peers: \(error)")
+            print("Error sending to peers: \(error)")
         }
     }
 }

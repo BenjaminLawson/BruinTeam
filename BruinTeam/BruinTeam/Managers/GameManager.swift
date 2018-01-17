@@ -21,7 +21,7 @@ class GameManager {
     
     var delegate: GameManagerDelegate?
     
-    var instructionManager: InstructionManager
+    var instructionManager: InstructionManager?
     
     // Host vars
     var allGameControlStates: [(control: Control, state: Any?)]?
@@ -32,7 +32,9 @@ class GameManager {
         self.isHost = isHost
         self.gpa = 3.0
         
-        self.instructionManager = InstructionManager(nPlayers: serviceManager.session.connectedPeers.count + 1)
+        if isHost {
+            self.instructionManager = InstructionManager(session: serviceManager.session)
+        }
         
         self.serviceManager.delegate = self
     }
@@ -50,28 +52,32 @@ class GameManager {
     // MARK: Host Functions
     
     func startGame() {
+        guard let instructionManager = self.instructionManager else {
+            print("start game guard failed")
+            return
+        }
+        
         // send peers starting controls
-         for index in 0..<serviceManager.session.connectedPeers.count {
-            let peer: MCPeerID = serviceManager.session.connectedPeers[index]
-            let peerControls: [Int] = instructionManager.controls(forPeerNumber: index)
+         for peer in serviceManager.session.connectedPeers {
+            //let peer: MCPeerID = serviceManager.session.connectedPeers[index]
+            let peerControls: [Int] = instructionManager.controls(forPeer: peer)
+            print("sending \(peerControls.count) controls to peer \(peer.displayName)")
             serviceManager.send(event: .startGame, withObject: peerControls as AnyObject, toPeers: [peer])
          }
         
         // give host starting controls
-        self.controls = instructionManager.controls(forPeerNumber: serviceManager.session.connectedPeers.count).map({ Controls.controls[$0] })
+        let hostPeer = serviceManager.session.myPeerID
+        self.controls = instructionManager.controls(forPeer: hostPeer).map({ Controls.controls[$0] })
         
-        
-        // TODO: save instructions
         // give peers commands
         for peer in serviceManager.session.connectedPeers {
-            let instruction = instructionManager.generateInstruction()
+            let instruction = instructionManager.generateInstruction(forPeer: peer)
             print("generated peer instruction: \(instruction)")
             serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
         }
         
         // give host a command
-        let hostInstruction = instructionManager.generateInstruction()
-        
+        let hostInstruction = instructionManager.generateInstruction(forPeer: hostPeer)
         print("generated host instruction: \(hostInstruction)")
         self.delegate?.commandChanged(command: hostInstruction)
         
