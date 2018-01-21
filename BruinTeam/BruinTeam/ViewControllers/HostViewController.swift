@@ -28,10 +28,7 @@ class HostViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.pushViewController(gameViewController, animated: true)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
-            gameManager.startGame()
-        })
-        
+        gameManager.startGame()
         
     }
 }
