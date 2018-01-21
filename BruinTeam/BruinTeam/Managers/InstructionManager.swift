@@ -107,8 +107,9 @@ class InstructionManager {
      ["uid": int, "value": Int]
      */
     
-    // applies state change and returns peer of pending instruction if exists, nil otherwise
-    func applyStateDict(dict: [String: Int], fromPeer peer: MCPeerID) -> MCPeerID? {
+    // applies state change and returns peer assigned pending instruction if such a peer exists, nil otherwise
+    func applyStateDict(dict: [String: Int]) -> MCPeerID? {
+        print("applying state dict")
         let uid = dict["uid"]!
         let newValue = dict["value"]!
         

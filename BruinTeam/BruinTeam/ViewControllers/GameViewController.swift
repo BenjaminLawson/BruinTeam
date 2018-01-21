@@ -59,7 +59,9 @@ class GameViewController: UIViewController {
     }
     
     @objc func controlValueChanged(sender: UIControl) {
+        gameManager?.handleStateChange(of: sender)
         //let stateDict = InstructionManager.stateDictFromUIControl(control: sender)
+        
         
         print("control \(sender.tag) value changed")
         if let control = sender as? UISwitch {

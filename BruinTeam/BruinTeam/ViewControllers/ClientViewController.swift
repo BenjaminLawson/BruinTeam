@@ -1,6 +1,8 @@
 import UIKit
 import MultipeerConnectivity
 
+// TODO: let client pick which advertiser they want to connect to
+
 class ClientViewController: UIViewController {
     @IBOutlet weak var statusLabel: UILabel!
     let serviceManager = DiscoveryServiceManager()
@@ -25,7 +27,7 @@ extension ClientViewController: DiscoveryServiceManagerDelegate {
         }
         print("data event: \(event as! String)")
         if event as! String == Event.startGame.rawValue {
-            // change serviceManager's delegate to gameManager ~RIGHT NOW~ to prevent ClientViewController from getting future game updates (race condition)
+            // change serviceManager's delegate to gameManager RIGHT NOW to prevent ClientViewController from getting future game updates (race condition)
             let gameManager = GameManager(serviceManager: self.serviceManager, isHost: false)
             
             DispatchQueue.main.async {
