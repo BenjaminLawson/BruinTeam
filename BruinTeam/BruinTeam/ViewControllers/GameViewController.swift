@@ -44,16 +44,13 @@ class GameViewController: UIViewController {
         
         switch controlModel.controlType {
         case .toggle:
-            print("making toggle control for \(controlModel.title)")
             let controlSwitch = UISwitch()
             controlView.genericControl = controlSwitch
         case .segmentedControl:
-            print("making segmented control for \(controlModel.title)")
             let segmentedControl = UISegmentedControl(items: controlModel.possibleValues as? [Any])
             segmentedControl.selectedSegmentIndex = 0
             controlView.genericControl = segmentedControl
         case .button:
-            print("making button control for \(controlModel.title)")
             let button = UIButton(type: .roundedRect)
             button.setTitle(controlModel.possibleValues as? String, for: .normal)
             button.sizeToFit()
@@ -73,22 +70,6 @@ class GameViewController: UIViewController {
     
     @objc func controlValueChanged(sender: UIControl) {
         gameManager?.handleStateChange(of: sender)
-        //let stateDict = InstructionManager.stateDictFromUIControl(control: sender)
-        
-        
-        print("control \(sender.tag) value changed")
-        if let control = sender as? UISwitch {
-            print("switch control")
-        }
-        else if let control = sender as? UISegmentedControl {
-            print("segmented control")
-        }
-        else if let control = sender as? UIButton {
-            print("button press")
-        }
-        else if let control = sender as? UISlider {
-            print("slider control")
-        }
     }
 }
 

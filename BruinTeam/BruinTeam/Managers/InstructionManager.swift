@@ -19,7 +19,6 @@ class ControlState {
     init(state: Int, ownedBy owner: MCPeerID) {
         self.state = state
         self.ownedBy = owner
-        self.pendingInstruction = nil
     }
 }
 
@@ -88,10 +87,16 @@ class InstructionManager {
                 instruction = "Disable \(control.title)"
                 value = 0
             }
-            
         case .segmentedControl:
-            // TODO: randomly pick any state other than current
-            instruction = "TODO: segmented \(control.title)" // TODO
+            // randomly pick any state other than current
+            let possibleValues = control.possibleValues as! [String]
+            let nValues = possibleValues.count
+            var randomValueIndex = Int(arc4random_uniform(UInt32(nValues)))
+            if randomValueIndex == state {
+                randomValueIndex = (state + 1) % nValues // if random index is current state, pick the next state (wrapped around)
+            }
+            value = randomValueIndex
+            instruction = "set \(control.title) to \(possibleValues[value])"
         case .button:
             instruction = "\(control.possibleValues as! String) \(control.title)"
         case .slider:
@@ -133,15 +138,12 @@ class InstructionManager {
         var value = -1
         
         if let control = control as? UISwitch {
-            //print("switch control")
             value = control.isOn ? 1 : 0
         }
         else if let control = control as? UISegmentedControl {
-            print("segmented control")
             value = control.selectedSegmentIndex
         }
         else if let control = control as? UISlider {
-            print("slider control")
             value = Int(control.value)
         }
         

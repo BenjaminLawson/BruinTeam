@@ -18,7 +18,7 @@ class DiscoveryServiceManager: NSObject {
     var delegate: DiscoveryServiceManagerDelegate?
     
     lazy var session: MCSession = {
-        let session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .none)
+        let session = MCSession(peer: self.myPeerID, securityIdentity: nil, encryptionPreference: .optional)
         session.delegate = self
         return session
     }()

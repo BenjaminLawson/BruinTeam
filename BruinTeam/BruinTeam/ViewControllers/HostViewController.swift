@@ -52,7 +52,6 @@ extension HostViewController: DiscoveryServiceManagerDelegate {
     
     func peerChangedState(peerID: MCPeerID, state: MCSessionState) {
         DispatchQueue.main.async {
-            print("reloading table view")
             self.connectionsTableView.reloadData()
         }
     }

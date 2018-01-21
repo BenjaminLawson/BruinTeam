@@ -146,7 +146,6 @@ extension GameManager: DiscoveryServiceManagerDelegate {
                 }
             }
         case Event.controlState:
-            // TODO: handle host's own control state changes
             guard let stateDict = dict["object"] as? [String: Int] else {
                 print("Event.controlState guard failed")
                 return
