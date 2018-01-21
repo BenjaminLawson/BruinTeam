@@ -20,17 +20,15 @@ class HostViewController: UIViewController {
 
     @IBAction func startButtonTouched(_ sender: Any) {
         let gameViewController: GameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "gameViewController") as! GameViewController
-        let _ = gameViewController.view // hack to force view hierarchy to load now
-        
         let gameManager = GameManager(serviceManager: serviceManager, isHost: true)
-        gameViewController.serviceManager = serviceManager
         gameViewController.gameManager = gameManager
         gameManager.delegate = gameViewController
+        gameManager.startGame()
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.pushViewController(gameViewController, animated: true)
         
-        gameManager.startGame()
+        
     }
 }
 

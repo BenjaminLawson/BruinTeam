@@ -25,13 +25,11 @@ extension ClientViewController: DiscoveryServiceManagerDelegate {
         }
         print("data event: \(event as! String)")
         if event as! String == Event.startGame.rawValue {
-            // TODO: fix this race condition
+            // change serviceManager's delegate to gameManager ~RIGHT NOW~ to prevent ClientViewController from getting future game updates (race condition)
+            let gameManager = GameManager(serviceManager: self.serviceManager, isHost: false)
+            
             DispatchQueue.main.async {
                 let gameViewController: GameViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "gameViewController") as! GameViewController
-                let _ = gameViewController.view // hack to force view hierarchy to load now
-                
-                gameViewController.serviceManager = self.serviceManager
-                let gameManager = GameManager(serviceManager: self.serviceManager, isHost: false)
                 gameViewController.gameManager = gameManager
                 gameManager.delegate = gameViewController
                 gameManager.controls = controls.map({ Controls.controls[$0] })

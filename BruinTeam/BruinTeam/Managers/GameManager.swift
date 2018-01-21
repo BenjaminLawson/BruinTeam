@@ -2,41 +2,44 @@ import MultipeerConnectivity
 import GameKit
 
 protocol GameManagerDelegate {
-    func receivedControls(controls: [Control])
-    func commandChanged(command: String)
+    func controlsChanged(to controls: [Control])
+    func instructionChanged(to instruction: String)
 }
 
 class GameManager {
     let serviceManager: DiscoveryServiceManager
+    var delegate: GameManagerDelegate?
+    var instructionManager: InstructionManager?
     var gpa: Float
     var isHost = false
+    
     // this player's controls
     var controls: [Control]? {
         didSet {
             if let controls = self.controls {
-                self.delegate?.receivedControls(controls: controls)
+                self.delegate?.controlsChanged(to: controls)
             }
         }
     }
-    
-    var delegate: GameManagerDelegate?
-    
-    var instructionManager: InstructionManager?
-    
-    // Host vars
-    var allGameControlStates: [(control: Control, state: Any?)]?
-    var outstandingInstructions: [(controlID: Control, state: Any?)]?
-    
+ 
+    var currentInstruction: String? {
+        didSet {
+            if let instruction = self.currentInstruction {
+                self.delegate?.instructionChanged(to: instruction)
+            }
+        }
+    }
+
     init(serviceManager: DiscoveryServiceManager, isHost: Bool) {
-        self.serviceManager = serviceManager
         self.isHost = isHost
         self.gpa = 3.0
         
-        if isHost {
-            self.instructionManager = InstructionManager(session: serviceManager.session)
-        }
-        
+        self.serviceManager = serviceManager
         self.serviceManager.delegate = self
+        
+        if isHost {
+            self.instructionManager = InstructionManager(session: self.serviceManager.session)
+        }
     }
     
     
@@ -79,8 +82,7 @@ class GameManager {
         // give host a command
         let hostInstruction = instructionManager.generateInstruction(forPeer: hostPeer)
         print("generated host instruction: \(hostInstruction)")
-        self.delegate?.commandChanged(command: hostInstruction)
-        
+        self.currentInstruction = hostInstruction
     }
     
 }
@@ -99,7 +101,7 @@ extension GameManager: DiscoveryServiceManagerDelegate {
         switch event  {
         case "NewInstruction":
             if let object = dict["object"] as? String {
-                DispatchQueue.main.async { self.delegate?.commandChanged(command: object) }
+                self.currentInstruction = object
             } else {
                 print("object downcast failed")
             }

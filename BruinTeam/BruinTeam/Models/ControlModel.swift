@@ -7,6 +7,7 @@ enum ControlType {
     case slider
 }
 
+// TODO: prepositions for instruction generation?
 class Control {
     let uid: Int
     let controlType: ControlType

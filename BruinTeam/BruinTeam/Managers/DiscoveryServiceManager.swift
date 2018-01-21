@@ -47,7 +47,7 @@ class DiscoveryServiceManager: NSObject {
     }
     
     public func invitePeer(peerID: MCPeerID) {
-        NSLog("%@", "invitePeer: \(peerID)")
+        print("invitePeer: \(peerID)")
         serviceBrowser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
     }
     
@@ -62,7 +62,7 @@ class DiscoveryServiceManager: NSObject {
         }
         let data = NSKeyedArchiver.archivedData(withRootObject: rootDictionary)
         do {
-            try self.session.send(data, toPeers: session.connectedPeers, with: .reliable)
+            try self.session.send(data, toPeers: peers, with: .reliable)
         }
         catch let error {
             print("Error sending to peers: \(error)")
@@ -117,15 +117,15 @@ extension DiscoveryServiceManager: MCSessionDelegate {
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-        NSLog("%@", "didReceiveStream")
+        print("didReceiveStream")
     }
     
     func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
-        NSLog("%@", "didStartReceivingResourceWithName")
+        print("didStartReceivingResourceWithName")
     }
     
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
-        NSLog("%@", "didFinishReceivingResourceWithName")
+        print("didFinishReceivingResourceWithName")
     }
     
     func session(_ session: MCSession, didReceiveCertificate certificate: [Any]?, fromPeer peerID: MCPeerID, certificateHandler: @escaping (Bool) -> Void) {

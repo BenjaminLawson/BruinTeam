@@ -3,29 +3,26 @@ import MultipeerConnectivity
 import GameKit
 
 class GameViewController: UIViewController {
-    @IBOutlet weak var instructionLabel: UILabel!
-    @IBOutlet weak var controlStackView: UIStackView!
+    @IBOutlet weak var instructionLabel: UILabel?
+    @IBOutlet weak var controlStackView: UIStackView?
     
-    var serviceManager: DiscoveryServiceManager?
     var gameManager: GameManager?
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // instructionLabel.text = "Toggle caffeine on!"
-        
-        //Controls.controls.forEach({ controlStackView.addArrangedSubview(controlViewFromModel(controlModel: $0)) })
-        if let manager = self.gameManager {
-            if let controls = manager.controls {
-                controls.forEach({ controlStackView.addArrangedSubview(controlViewFromModel(controlModel: $0)) })
-            }
-        }
+        self.reloadControls()
+        self.reloadInstruction()
     }
     
-    func updateControls(controls: [Control]) {
-        controlStackView.subviews.forEach({ $0.removeFromSuperview() })
-        controls.forEach({ controlStackView.addArrangedSubview(controlViewFromModel(controlModel: $0)) })
+    func reloadControls() {
+        controlStackView?.subviews.forEach { $0.removeFromSuperview() }
+        gameManager?.controls?.forEach { controlStackView?.addArrangedSubview(controlViewFromModel(controlModel: $0)) }
+    }
+    
+    func reloadInstruction() {
+        instructionLabel?.text = gameManager?.currentInstruction ?? "Wait for instruction..."
     }
 
     func controlViewFromModel(controlModel: Control) -> ControlView {
@@ -81,13 +78,14 @@ class GameViewController: UIViewController {
 }
 
 extension GameViewController: GameManagerDelegate {
-    func receivedControls(controls: [Control]) {
-        self.updateControls(controls: controls)
+    func controlsChanged(to controls: [Control]) {
+        self.reloadControls()
     }
     
-    func commandChanged(command: String) {
+    
+    func instructionChanged(to command: String) {
         print("game view controller command changed")
-        self.instructionLabel.text = command
+        self.reloadInstruction()
     }
     
     

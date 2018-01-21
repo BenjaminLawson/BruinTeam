@@ -8,15 +8,13 @@
  
  */
 
-
-
 import MultipeerConnectivity
 import GameKit
 
 class ControlState {
     var ownedBy: MCPeerID
     var state: Int
-    var pendingInstruction: (value: Int, peer: MCPeerID)? // state : peer
+    var pendingInstruction: (value: Int, peer: MCPeerID)?
     
     init(state: Int, ownedBy owner: MCPeerID) {
         self.state = state
@@ -30,12 +28,6 @@ class InstructionManager {
     let gameControls: [Control]
     let nPlayers: Int
     let nControlsPerPlayer: Int
-    
-    //var controlOwners: [Int: MCPeerID]
-    //var controlStates: [Int: Int] // uid : current known state value
-    //var pendingCommands = [Int: Int]() // uid : desired state value
-    
-    //var pendingInstructons = [Int: [(value: Int, peer: MCPeerID)]]()
     var controlStates = [Int: ControlState]()
     
     init(session: MCSession, controlsPerPlayer: Int = 3) {
@@ -109,6 +101,11 @@ class InstructionManager {
         registerInstruction(uid: control.uid, value: value, peer: peer)
         return instruction
     }
+    
+    // MARK: State Dictionary
+    /*
+     ["uid": int, "value": Int]
+     */
     
     // applies state change and returns peer of pending instruction if exists, nil otherwise
     func applyStateDict(dict: [String: Int], fromPeer peer: MCPeerID) -> MCPeerID? {
