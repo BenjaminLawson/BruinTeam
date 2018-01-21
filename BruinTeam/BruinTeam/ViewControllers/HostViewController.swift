@@ -23,10 +23,14 @@ class HostViewController: UIViewController {
         let gameManager = GameManager(serviceManager: serviceManager, isHost: true)
         gameViewController.gameManager = gameManager
         gameManager.delegate = gameViewController
-        gameManager.startGame()
+        
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         navigationController?.pushViewController(gameViewController, animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+            gameManager.startGame()
+        })
         
         
     }

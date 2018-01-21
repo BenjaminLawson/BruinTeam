@@ -14,6 +14,8 @@ class GameViewController: UIViewController {
         
         self.reloadControls()
         self.reloadInstruction()
+        //instructionLabel?.layer.borderWidth = 2
+        //instructionLabel?.layer.borderColor = UIColor.red.cgColor
     }
     
     func reloadControls() {
@@ -22,7 +24,28 @@ class GameViewController: UIViewController {
     }
     
     func reloadInstruction() {
-        instructionLabel?.text = gameManager?.currentInstruction ?? "Wait for instruction..."
+        //instructionLabel?.text = gameManager?.currentInstruction ?? "Wait for instruction..."
+        guard let label = instructionLabel else { return }
+        let text = gameManager?.currentInstruction ?? "Wait for instruction..."
+        let oldOrigin = label.frame.origin
+        
+        let setNewInstructionBlock = {
+            label.frame.origin = oldOrigin
+            label.text = text
+            label.alpha = 1.0
+        }
+        
+        
+        if gameManager?.currentInstruction == nil {
+            setNewInstructionBlock()
+        }
+        else {
+            self.view.layoutIfNeeded()
+            UIView.transition(with: label, duration: 1.0, options: [.curveEaseIn], animations: {
+                label.frame.origin.y -= 30
+                label.alpha = 0.0
+            }, completion: { finished in setNewInstructionBlock() })
+        }
     }
 
     func controlViewFromModel(controlModel: Control) -> ControlView {

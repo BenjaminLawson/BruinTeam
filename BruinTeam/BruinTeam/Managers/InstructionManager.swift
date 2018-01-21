@@ -30,7 +30,7 @@ class InstructionManager {
     let nControlsPerPlayer: Int
     var controlStates = [Int: ControlState]()
     
-    init(session: MCSession, controlsPerPlayer: Int = 3) {
+    init(session: MCSession, controlsPerPlayer: Int = 4) {
         self.nPlayers = session.connectedPeers.count + 1
         self.nControlsPerPlayer = controlsPerPlayer
         

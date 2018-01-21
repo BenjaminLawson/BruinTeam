@@ -11,7 +11,11 @@ struct Controls {
         Control(uid: 8, controlType: .button, title: "all nighter", possibleValues: "pull"),
         Control(uid: 9, controlType: .toggle, title: "pass time", possibleValues: nil),
         Control(uid: 10, controlType: .segmentedControl, title: "hours of sleep", possibleValues: ["0", "2", "4","8"]),
-        Control(uid: 11, controlType: .button, title: "Discussion", possibleValues: "Skip")
+        Control(uid: 11, controlType: .button, title: "Discussion", possibleValues: "Skip"),
+        Control(uid: 12, controlType: .button, title: "Diffutils", possibleValues: "git clone"),
+        Control(uid: 13, controlType: .button, title: "career fair", possibleValues: "attend"),
+        Control(uid: 14, controlType: .segmentedControl, title: "career fair line", possibleValues: ["1hr", "2hr", "3hr"]),
+        Control(uid: 15, controlType: .button, title: "easy GE", possibleValues: "drop")
     ]
     
     static func typeOf(control uid: Int) -> ControlType {
