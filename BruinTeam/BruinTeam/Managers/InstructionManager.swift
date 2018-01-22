@@ -29,7 +29,7 @@ class InstructionManager {
     let nControlsPerPlayer: Int
     var controlStates = [Int: ControlState]()
     
-    init(session: MCSession, controlsPerPlayer: Int = 4) {
+    init(session: MCSession, controlsPerPlayer: Int = 5) {
         self.nPlayers = session.connectedPeers.count + 1
         self.nControlsPerPlayer = controlsPerPlayer
         
@@ -94,7 +94,7 @@ class InstructionManager {
         case .button:
             instruction = "\(control.possibleValues as! String) \(control.title)"
         case .slider:
-            let possibleValues = control.possibleValues as! [Int]
+            let possibleValues = control.possibleValues as! [String]
             value = pickStateForMultipleChoiceControl(oldState: state, control: control)
             instruction = "set \(control.title) to \(possibleValues[value])"
         }

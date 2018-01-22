@@ -57,16 +57,8 @@ class GameViewController: UIViewController {
             controlView.genericControl = button
             button.addTarget(self, action: #selector(controlValueChanged(sender:)), for: .touchUpInside) // value doesn't change, listen for touch
         case .slider:
-            // TODO
-            print("making slider control for \(controlModel.title)")
-            let slider = UISlider()
-            slider.isContinuous = false // only trigger value change when you let go
-            let possibleValues = controlModel.possibleValues as! [Int]
-            slider.minimumValue = 0.0
-            slider.maximumValue = Float(possibleValues.count - 1)
-            slider.frame = CGRect(x: 0, y: 0, width: possibleValues.count * 40, height: 30)
-            
-            controlView.genericControl = slider
+            let possibleValues = controlModel.possibleValues as! [String]
+            controlView.genericControl = LabeledSlider(names: possibleValues)
         }
         
         controlView.genericControl?.tag = controlModel.uid
@@ -76,12 +68,6 @@ class GameViewController: UIViewController {
     }
     
     @objc func controlValueChanged(sender: UIControl) {
-        // round slider value
-        if let slider = sender as? UISlider {
-            let index = Int(slider.value + 0.5)
-            slider.setValue(Float(index), animated: false)
-        }
-        
         gameManager?.handleStateChange(of: sender)
     }
 }
@@ -93,7 +79,6 @@ extension GameViewController: GameManagerDelegate {
     
     
     func instructionChanged(to command: String) {
-        print("game view controller command changed")
         self.reloadInstruction()
     }
     
