@@ -26,7 +26,11 @@ struct Controls {
         Control(uid: 23, controlType: .button, title: "Piazza", possibleValues: "post on"),
         Control(uid: 24, controlType: .toggle, title: "fire alarm", possibleValues: nil),
         Control(uid: 25, controlType: .button, title: "the gym", possibleValues: "hit"),
-        Control(uid: 26, controlType: .segmentedControl, title: "ucla memes", possibleValues: ["🔥","🍌", "🏈", "🍺", "🤔"])
+        Control(uid: 26, controlType: .segmentedControl, title: "ucla memes", possibleValues: ["🔥","🍌", "🏈", "🍺", "🤔"]),
+        Control(uid: 27, controlType: .slider, title: "affordable housing", possibleValues: ["⛺️", "🏚", "🚗","🛶"]),
+        Control(uid: 28, controlType: .segmentedControl, title: "Feast menu item", possibleValues: ["🍙","🍚", "🍘", "🥟", "🍜"]),
+        Control(uid: 29, controlType: .segmentedControl, title: "BPlate menu item", possibleValues: ["🍄","☘️", "🥦", "🥗", "🥩"]),
+        Control(uid: 30, controlType: .slider, title: "current health", possibleValues: ["🤮","🤧", "😷", "🤒", "🤕"])
         
     ]
     
