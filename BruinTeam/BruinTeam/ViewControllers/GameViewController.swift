@@ -59,7 +59,14 @@ class GameViewController: UIViewController {
         case .slider:
             // TODO
             print("making slider control for \(controlModel.title)")
-            controlView.genericControl = UISlider()
+            let slider = UISlider()
+            slider.isContinuous = false // only trigger value change when you let go
+            let possibleValues = controlModel.possibleValues as! [Int]
+            slider.minimumValue = 0.0
+            slider.maximumValue = Float(possibleValues.count - 1)
+            slider.frame = CGRect(x: 0, y: 0, width: possibleValues.count * 40, height: 30)
+            
+            controlView.genericControl = slider
         }
         
         controlView.genericControl?.tag = controlModel.uid
@@ -69,6 +76,12 @@ class GameViewController: UIViewController {
     }
     
     @objc func controlValueChanged(sender: UIControl) {
+        // round slider value
+        if let slider = sender as? UISlider {
+            let index = Int(slider.value + 0.5)
+            slider.setValue(Float(index), animated: false)
+        }
+        
         gameManager?.handleStateChange(of: sender)
     }
 }

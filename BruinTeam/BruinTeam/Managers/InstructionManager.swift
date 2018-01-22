@@ -88,23 +88,30 @@ class InstructionManager {
                 value = 0
             }
         case .segmentedControl:
-            // randomly pick any state other than current
             let possibleValues = control.possibleValues as! [String]
-            let nValues = possibleValues.count
-            var randomValueIndex = Int(arc4random_uniform(UInt32(nValues)))
-            if randomValueIndex == state {
-                randomValueIndex = (state + 1) % nValues // if random index is current state, pick the next state (wrapped around)
-            }
-            value = randomValueIndex
+            value = pickStateForMultipleChoiceControl(oldState: state, control: control)
             instruction = "set \(control.title) to \(possibleValues[value])"
         case .button:
             instruction = "\(control.possibleValues as! String) \(control.title)"
         case .slider:
-            instruction = "TODO: slider \(control.title)" // TODO
+            let possibleValues = control.possibleValues as! [Int]
+            value = pickStateForMultipleChoiceControl(oldState: state, control: control)
+            instruction = "set \(control.title) to \(possibleValues[value])"
         }
         
         registerInstruction(uid: control.uid, value: value, peer: peer)
         return instruction
+    }
+    
+    func pickStateForMultipleChoiceControl(oldState: Int, control: Control) -> Int {
+        // randomly pick any state other than current
+        let possibleValues = control.possibleValues as! [Any]
+        let nValues = possibleValues.count
+        var randomValueIndex = Int(arc4random_uniform(UInt32(nValues)))
+        if randomValueIndex == oldState {
+            randomValueIndex = (oldState + 1) % nValues // if random index is current state, pick the next state (wrapped around)
+        }
+        return randomValueIndex
     }
     
     // MARK: State Dictionary
@@ -125,17 +132,20 @@ class InstructionManager {
         
         controlState.state = newValue
         
+        // check if control state change completed a pending instruction
         if let pendingInstruction = controlState.pendingInstruction {
-            let instructionOwner = pendingInstruction.peer
-            controlState.pendingInstruction = nil
-            return instructionOwner
+            if pendingInstruction.value == newValue {
+                let instructionOwner = pendingInstruction.peer
+                controlState.pendingInstruction = nil
+                return instructionOwner
+            }
         }
         
         return nil
     }
     
     static func stateDictFromUIControl(control: UIControl) -> [String: Int] {
-        var value = -1
+        var value = 0
         
         if let control = control as? UISwitch {
             value = control.isOn ? 1 : 0
@@ -147,6 +157,7 @@ class InstructionManager {
             value = Int(control.value)
         }
         
+        print(["uid": control.tag, "value": value])
         return ["uid": control.tag, "value": value]
     }
 }
