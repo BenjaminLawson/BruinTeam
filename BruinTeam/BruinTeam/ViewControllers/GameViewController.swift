@@ -4,10 +4,11 @@ import GameKit
 
 class GameViewController: UIViewController {
     @IBOutlet weak var instructionLabel: UILabel?
+    @IBOutlet weak var timerLabel: UILabel?
     @IBOutlet weak var controlStackView: UIStackView?
     
     var gameManager: GameManager?
-
+    var instructionTimer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class GameViewController: UIViewController {
     func reloadInstruction() {
         guard let label = instructionLabel,
         let text = gameManager?.currentInstruction else { return }
+        self.updateTimer()
 
         let oldOrigin = label.frame.origin
         
@@ -68,7 +70,40 @@ class GameViewController: UIViewController {
     }
     
     @objc func controlValueChanged(sender: UIControl) {
+        instructionTimer?.invalidate()
         gameManager?.handleStateChange(of: sender)
+    }
+    
+    @objc func updateTimer() {
+        if (instructionTimer != nil) && (instructionTimer?.isValid)! {
+            let timeRemaining = Int((timerLabel?.text?.components(separatedBy: " ")[0])!)
+            if timeRemaining != nil {
+                if timeRemaining == 0 {
+                    print("Ran out of time")
+                    instructionTimer?.invalidate()
+                } else {
+                    timerLabel?.text = String(timeRemaining!-1) + " sec"
+                }
+            }
+        }
+        else {
+            instructionTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimer), userInfo: nil, repeats: true)
+            var newTime = 0
+            let gpa = (gameManager?.gpa)!
+            if gpa > 3.0 {
+                newTime = Int(arc4random_uniform(5)+3)
+            }
+            else if gpa > 2.0 {
+                newTime = Int(arc4random_uniform(10)+3)
+            }
+            else if gpa > 1.0 {
+                newTime = Int(arc4random_uniform(15)+3)
+            }
+            else {
+                newTime = Int(arc4random_uniform(20)+3)
+            }
+            timerLabel?.text = String(newTime) + " sec"
+        }
     }
 }
 
