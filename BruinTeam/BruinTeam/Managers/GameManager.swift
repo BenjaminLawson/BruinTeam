@@ -109,10 +109,6 @@ class GameManager {
         }
     }
     
-    func processTimeExpiration() {
-        
-    }
-    
     func updateGPA(success: Bool) {
         if(success) {
             self.gpa += 0.1

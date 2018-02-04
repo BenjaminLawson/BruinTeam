@@ -4,11 +4,14 @@ import GameKit
 
 class GameViewController: UIViewController {
     @IBOutlet weak var instructionLabel: UILabel?
-    @IBOutlet weak var timerLabel: UILabel?
+    @IBOutlet weak var gpaLabel: UILabel!
+    @IBOutlet weak var timerView: UIProgressView!
     @IBOutlet weak var controlStackView: UIStackView?
     
     var gameManager: GameManager?
     var instructionTimer: Timer?
+    var totalTime: Float = 0.0
+    var currTime: Float = 0.0
     var uid: Int?
     
     override func viewDidLoad() {
@@ -26,6 +29,7 @@ class GameViewController: UIViewController {
     func reloadInstruction() {
         guard let label = instructionLabel,
         let text = gameManager?.currentInstruction else { return }
+        gpaLabel.text = "GPA: " + String((gameManager?.gpa)!)
         self.updateTimer()
 
         let oldOrigin = label.frame.origin
@@ -78,34 +82,34 @@ class GameViewController: UIViewController {
     
     @objc func updateTimer() {
         if (instructionTimer != nil) && (instructionTimer?.isValid)! {
-            let timeRemaining = Int((timerLabel?.text?.components(separatedBy: " ")[0])!)
-            if timeRemaining != nil {
-                if timeRemaining == 0 {
-                    print("Ran out of time")
-                    instructionTimer?.invalidate()
-                    gameManager?.processControlStateDict(dict: ["uid": uid!, "value": 0])
-                } else {
-                    timerLabel?.text = String(timeRemaining!-1) + " sec"
-                }
+            currTime -= 0.01
+            if currTime <= 0.0 {
+                print("timer expired")
+                instructionTimer?.invalidate()
+                gameManager?.processControlStateDict(dict: ["uid": uid!, "value": 0])
+            }
+            else {
+                timerView?.setProgress(currTime/totalTime, animated: true)
             }
         }
         else {
-            instructionTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateTimer), userInfo: nil, repeats: true)
-            var newTime = 0
+            instructionTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.updateTimer), userInfo: nil, repeats: true)
+            totalTime = 0
             let gpa = (gameManager?.gpa)!
             if gpa > 3.0 {
-                newTime = Int(arc4random_uniform(5)+3)
+                totalTime = Float(arc4random_uniform(5)+3)
             }
             else if gpa > 2.0 {
-                newTime = Int(arc4random_uniform(10)+3)
+                totalTime = Float(arc4random_uniform(10)+3)
             }
             else if gpa > 1.0 {
-                newTime = Int(arc4random_uniform(15)+3)
+                totalTime = Float(arc4random_uniform(15)+3)
             }
             else {
-                newTime = Int(arc4random_uniform(20)+3)
+                totalTime = Float(arc4random_uniform(20)+3)
             }
-            timerLabel?.text = String(newTime) + " sec"
+            currTime = totalTime
+            timerView.setProgress(1.0, animated: false)
         }
     }
 }
