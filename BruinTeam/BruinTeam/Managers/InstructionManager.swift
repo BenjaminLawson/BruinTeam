@@ -120,14 +120,14 @@ class InstructionManager {
      */
     
     // applies state change and returns peer assigned pending instruction if such a peer exists, nil otherwise
-    func applyStateDict(dict: [String: Int]) -> MCPeerID? {
+    func applyStateDict(dict: [String: Int]) -> (MCPeerID?, Bool) {
         print("applying state dict")
         let uid = dict["uid"]!
         let newValue = dict["value"]!
         
         guard let controlState = controlStates[uid] else {
             print("error getting control state in applyStateDict")
-            return nil
+            return (nil, false)
         }
         
         controlState.state = newValue
@@ -137,11 +137,16 @@ class InstructionManager {
             if pendingInstruction.value == newValue {
                 let instructionOwner = pendingInstruction.peer
                 controlState.pendingInstruction = nil
-                return instructionOwner
+                return (instructionOwner, true)
+            }
+            else {
+                let instructionOwner = pendingInstruction.peer
+                controlState.pendingInstruction = nil
+                return (instructionOwner, false)
             }
         }
-        
-        return nil
+        let instructionOwner = controlState.ownedBy
+        return (instructionOwner, false)
     }
     
     static func stateDictFromUIControl(control: UIControl) -> [String: Int] {

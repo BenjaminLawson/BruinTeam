@@ -96,19 +96,35 @@ class GameManager {
     }
     
     func processControlStateDict(dict: [String: Int]) {
-        if let instructionOwner = instructionManager?.applyStateDict(dict: dict) {
+        let (instructionOwner, success) = (instructionManager?.applyStateDict(dict: dict))!
+        if success {
             print("control state change resolved valid instruction")
-            notifyInstructionOwnerOfSuccess(peer: instructionOwner)
+            self.updateGPA(success: true)
+            notifyInstructionOwner(peer: instructionOwner!)
         }
         else {
             print("control state change did not resolve valid instruction")
-            // TODO: penalty?
+            self.updateGPA(success: false)
+            notifyInstructionOwner(peer: instructionOwner!)
+        }
+    }
+    
+    func processTimeExpiration() {
+        
+    }
+    
+    func updateGPA(success: Bool) {
+        if(success) {
+            self.gpa += 0.1
+        }
+        else {
+            self.gpa -= 0.1
         }
     }
     
     // notify owner & send new instruction
     // host function
-    func notifyInstructionOwnerOfSuccess(peer: MCPeerID) {
+    func notifyInstructionOwner(peer: MCPeerID) {
         // generate new instruction
         guard let instructionManager = self.instructionManager else { return }
         

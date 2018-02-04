@@ -9,6 +9,7 @@ class GameViewController: UIViewController {
     
     var gameManager: GameManager?
     var instructionTimer: Timer?
+    var uid: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +64,7 @@ class GameViewController: UIViewController {
             controlView.genericControl = LabeledSlider(names: possibleValues)
         }
         
+        uid = controlModel.uid
         controlView.genericControl?.tag = controlModel.uid
         controlView.genericControl?.addTarget(self, action: #selector(controlValueChanged(sender:)), for: .valueChanged)
         
@@ -81,6 +83,7 @@ class GameViewController: UIViewController {
                 if timeRemaining == 0 {
                     print("Ran out of time")
                     instructionTimer?.invalidate()
+                    gameManager?.processControlStateDict(dict: ["uid": uid!, "value": 0])
                 } else {
                     timerLabel?.text = String(timeRemaining!-1) + " sec"
                 }
