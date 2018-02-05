@@ -86,11 +86,11 @@ class GameViewController: UIViewController {
     }
     
     @objc func updateTimer() {
-        if (instructionTimer != nil) && instructionTimer!.isValid {
+        if let instructionTimer = self.instructionTimer, instructionTimer.isValid {
             currTime -= 0.01
             if currTime <= 0.0 {
                 print("timer expired")
-                instructionTimer?.invalidate()
+                instructionTimer.invalidate()
                 gameManager?.processTimerExpired()
             }
             else {
