@@ -78,10 +78,10 @@
 		B579034E200B1FEE005A3C9B /* BruinTeam */ = {
 			isa = PBXGroup;
 			children = (
+				B579034F200B1FEE005A3C9B /* AppDelegate.swift */,
 				B5E0357B200C1E280043DAB7 /* Constants */,
 				B5E03578200C132B0043DAB7 /* Models */,
 				B5A75D5C200BF47F007151A3 /* Views */,
-				B579034F200B1FEE005A3C9B /* AppDelegate.swift */,
 				B5790365200B2A2C005A3C9B /* ViewControllers */,
 				B5790366200B2A40005A3C9B /* Managers */,
 				B5790358200B1FEE005A3C9B /* Main.storyboard */,

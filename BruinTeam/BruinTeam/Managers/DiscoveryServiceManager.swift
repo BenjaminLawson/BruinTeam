@@ -23,6 +23,13 @@ class DiscoveryServiceManager: NSObject {
         return session
     }()
     
+    /// shortcut to get all peers
+    var peers: [MCPeerID] {
+        get {
+            return session.connectedPeers
+        }
+    }
+    
     override init() {
         serviceAdvertiser = MCNearbyServiceAdvertiser(peer: myPeerID, discoveryInfo: nil, serviceType: bruinTeamServiceType)
         serviceBrowser = MCNearbyServiceBrowser(peer: myPeerID, serviceType: bruinTeamServiceType)
@@ -51,12 +58,18 @@ class DiscoveryServiceManager: NSObject {
         serviceBrowser.invitePeer(peerID, to: session, withContext: nil, timeout: 10)
     }
     
+    /**
+     - Parameter object: the value sent in the dictionary's "object" key, can be nil.
+     */
     public func send(event: Event, withObject object: AnyObject? = nil, toPeers peers: [MCPeerID]) {
         if peers.count == 0 {
+            print("Warning: attempted to send event to 0 peers.")
             return
         }
         
         var rootDictionary: [String: Any] = ["event": event.rawValue]
+        
+        // only some events require payloads
         if let obj = object {
             rootDictionary["object"] = obj
         }

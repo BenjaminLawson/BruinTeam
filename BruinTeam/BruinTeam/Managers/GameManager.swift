@@ -4,16 +4,16 @@ import GameKit
 protocol GameManagerDelegate {
     func controlsChanged(to controls: [Control])
     func instructionChanged(to instruction: String)
+    func gpaChanged(to gpa: Float)
 }
 
 class GameManager {
     let serviceManager: DiscoveryServiceManager
     var delegate: GameManagerDelegate?
     var instructionManager: InstructionManager?
-    var gpa: Float
     var isHost = false
     
-    // this player's controls
+    /// this player's controls
     var controls: [Control]? {
         didSet {
             if let controls = self.controls {
@@ -22,11 +22,19 @@ class GameManager {
         }
     }
  
+    /// this player's current instruction
     var currentInstruction: String? {
         didSet {
             if let instruction = self.currentInstruction {
                 self.delegate?.instructionChanged(to: instruction)
             }
+        }
+    }
+    
+    /// the team's GPA, should be synchronized across all players
+    var gpa: Float {
+        didSet {
+            self.delegate?.gpaChanged(to: gpa)
         }
     }
 
@@ -42,18 +50,14 @@ class GameManager {
         }
     }
     
-    
-    
-    func setControlToState() {
-        
-    }
-    
-    func controlStateChanged() {
-        
-    }
-    
-    // MARK: Host Functions
-    
+    /**
+     Call when all players have connected to host to initiate the game.
+     1. Send all peers starting controls
+     2. Give host its controls
+     3. Assign a starting instruction to all peers
+     4. Assign a starting instruction to the host
+     - Warning: Only host should call.
+     */
     func startGame() {
         guard let instructionManager = self.instructionManager else {
             print("start game guard failed")
@@ -85,52 +89,89 @@ class GameManager {
         self.currentInstruction = hostInstruction
     }
     
+    
+    /**
+     Call whenever a control changes value on either client or host.
+     If host, apply the change.
+     If client, send state change message to host.
+     - Parameter control: The UIControl that changed state.
+     */
     func handleStateChange(of control: UIControl) {
         let stateDict = InstructionManager.stateDictFromUIControl(control: control)
         if isHost {
+            // apply change as if it were sent from a client, for sweet sweet code reusability!
             processControlStateDict(dict: stateDict)
         } else {
-            // send state change to host
+            // this player is a client, so send state change to host
             serviceManager.send(event: Event.controlState, withObject: stateDict as AnyObject, toPeers: serviceManager.session.connectedPeers)
         }
     }
     
+    /**
+     Apply the received control state change message.
+     If it completed a pending instruction, notify the owner.
+     Update the GPA accordingly.
+     - Warning: Only host should call.
+     - Parameter dict: Dictionary generated from InstructionManager.stateDictFromUIControl, representing the uid
+        of the control and the value it is set to.
+     */
     func processControlStateDict(dict: [String: Int]) {
-        let (instructionOwner, success) = (instructionManager?.applyStateDict(dict: dict))!
-        if success {
+        if let instructionOwner = instructionManager?.applyStateDict(dict: dict) {
             print("control state change resolved valid instruction")
             self.updateGPA(success: true)
-            notifyInstructionOwner(peer: instructionOwner!)
+            notifyInstructionOwner(peer: instructionOwner)
         }
         else {
             print("control state change did not resolve valid instruction")
             self.updateGPA(success: false)
-            notifyInstructionOwner(peer: instructionOwner!)
         }
     }
     
+    /**
+     Called when host processes a control change.
+     - Warning: Only host should call.
+     */
     func updateGPA(success: Bool) {
-        if(success) {
-            self.gpa += 0.1
-        }
-        else {
-            self.gpa -= 0.1
-        }
+        gpa += success ? 0.1 : -0.1
+        serviceManager.send(event: .gpaUpdate, withObject: gpa as AnyObject, toPeers: serviceManager.peers)
     }
     
-    // notify owner & send new instruction
-    // host function
+    /**
+        Notify owner that their instruction was completed & send new instruction.
+     
+     TODO: send different event for instruction completed/failed vs just a new instruction event?
+     - Warning: Only host should call.
+     - Parameter peer: The peer object of the instruction owner.
+     */
     func notifyInstructionOwner(peer: MCPeerID) {
-        // generate new instruction
         guard let instructionManager = self.instructionManager else { return }
         
+        // generate new instruction
         let instruction = instructionManager.generateInstruction(forPeer: peer)
         if peer == serviceManager.session.myPeerID {
-            // peer is self, no need to send message
+            // instruction owner is host, no need to send message
             self.currentInstruction = instruction
         }
         else {
-            serviceManager.send(event: Event.newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+            // send new instruction to the client that owned the completed instruction
+            serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+        }
+    }
+    
+    func processTimerExpired() {
+        // decrease gpa
+        updateGPA(success: false)
+        
+        if isHost {
+            guard let instructionManager = self.instructionManager else { return }
+            // delete pendingInstruction for the control
+            instructionManager.deletePendingInstructions(for: serviceManager.session.myPeerID)
+            // generate new instruction for self
+            currentInstruction = instructionManager.generateInstruction(forPeer: serviceManager.session.myPeerID)
+        }
+        else { // client
+            // send timer expired message to host
+            serviceManager.send(event: .instructionExpired, withObject: nil, toPeers: serviceManager.session.connectedPeers)
         }
     }
     
@@ -151,13 +192,13 @@ extension GameManager: DiscoveryServiceManagerDelegate {
         }
         
         switch event  {
-        case Event.newInstruction:
+        case .newInstruction:
             if let object = dict["object"] as? String {
                 DispatchQueue.main.async {
                     self.currentInstruction = object
                 }
             }
-        case Event.controlState:
+        case .controlState:
             guard let stateDict = dict["object"] as? [String: Int] else {
                 print("Event.controlState guard failed")
                 return
@@ -168,7 +209,26 @@ extension GameManager: DiscoveryServiceManagerDelegate {
                     self.processControlStateDict(dict: stateDict)
                 }
             }
-            
+        case .instructionExpired:
+            if isHost {
+                DispatchQueue.main.async {
+                    guard let instructionManager = self.instructionManager else { return }
+                    print("received instructionExpired event")
+                    instructionManager.deletePendingInstructions(for: peer)
+                    // generate new instruction
+                    let instruction = instructionManager.generateInstruction(forPeer: peer)
+                    // send new instruction to the client that owned the expired instruction
+                    self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+                }
+            }
+        case .gpaUpdate:
+            guard let newGPA = dict["object"] as? Float else {
+                print("invalid gpaUpdate object")
+                return
+            }
+            DispatchQueue.main.async {
+                self.gpa = newGPA
+            }
         default:
             print("unrecognized event \(event)")
         }

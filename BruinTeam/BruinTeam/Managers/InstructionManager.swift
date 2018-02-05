@@ -14,6 +14,7 @@ import GameKit
 class ControlState {
     var ownedBy: MCPeerID
     var state: Int
+    /// if a peer has been assigned an instruction for this control, this is the value and owner of the instruction
     var pendingInstruction: (value: Int, peer: MCPeerID)?
     
     init(state: Int, ownedBy owner: MCPeerID) {
@@ -120,35 +121,41 @@ class InstructionManager {
      */
     
     // applies state change and returns peer assigned pending instruction if such a peer exists, nil otherwise
-    func applyStateDict(dict: [String: Int]) -> (MCPeerID?, Bool) {
+    func applyStateDict(dict: [String: Int]) -> MCPeerID? {
         print("applying state dict")
         let uid = dict["uid"]!
         let newValue = dict["value"]!
         
         guard let controlState = controlStates[uid] else {
             print("error getting control state in applyStateDict")
-            return (nil, false)
+            return nil
         }
         
+        // update host's cache of control states
         controlState.state = newValue
         
         // check if control state change completed a pending instruction
-        if let pendingInstruction = controlState.pendingInstruction {
-            if pendingInstruction.value == newValue {
-                let instructionOwner = pendingInstruction.peer
-                controlState.pendingInstruction = nil
-                return (instructionOwner, true)
-            }
-            else {
-                let instructionOwner = pendingInstruction.peer
-                controlState.pendingInstruction = nil
-                return (instructionOwner, false)
-            }
+        if let pendingInstruction = controlState.pendingInstruction, pendingInstruction.value == newValue {
+            controlState.pendingInstruction = nil // delete completed instruction
+            return pendingInstruction.peer // instruction owner
         }
-        let instructionOwner = controlState.ownedBy
-        return (instructionOwner, false)
+        return nil // no instruction was completed by control change
     }
     
+    func deletePendingInstructions(for peer: MCPeerID) {
+        controlStates.forEach {
+            if let pendingInstruction = $0.value.pendingInstruction, pendingInstruction.peer == peer {
+                print("deleting pending instruction for peer \(peer.displayName)")
+                $0.value.pendingInstruction = nil
+            }
+        }
+    }
+    
+    /**
+     - Returns: A dictionary of the control id and its state value.
+     
+        ["uid": Int, "value": Int]
+     */
     static func stateDictFromUIControl(control: UIControl) -> [String: Int] {
         var value = 0
         

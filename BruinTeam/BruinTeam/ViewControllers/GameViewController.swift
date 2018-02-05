@@ -1,26 +1,31 @@
 import UIKit
 import MultipeerConnectivity
-import GameKit
 
 class GameViewController: UIViewController {
     @IBOutlet weak var instructionLabel: UILabel?
     @IBOutlet weak var gpaLabel: UILabel!
-    @IBOutlet weak var timerView: UIProgressView!
-    @IBOutlet weak var controlStackView: UIStackView?
+    @IBOutlet weak var timerView: UIProgressView? // optional in case progress changed before view loaded
+    @IBOutlet weak var controlStackView: UIStackView? // optional in case controls received before view loaded
     
     var gameManager: GameManager?
+    
+    // Timer
     var instructionTimer: Timer?
     var totalTime: Float = 0.0
     var currTime: Float = 0.0
-    var uid: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        timerView?.setProgress(100.0, animated: false)
         
         self.reloadControls()
         self.reloadInstruction()
     }
     
+    /**
+     Inserts assigned controls into the control stackview.
+     */
     func reloadControls() {
         controlStackView?.subviews.forEach { $0.removeFromSuperview() }
         gameManager?.controls?.forEach { controlStackView?.addArrangedSubview(controlViewFromModel(controlModel: $0)) }
@@ -29,8 +34,6 @@ class GameViewController: UIViewController {
     func reloadInstruction() {
         guard let label = instructionLabel,
         let text = gameManager?.currentInstruction else { return }
-        gpaLabel.text = "GPA: " + String((gameManager?.gpa)!)
-        self.updateTimer()
 
         let oldOrigin = label.frame.origin
         
@@ -45,6 +48,10 @@ class GameViewController: UIViewController {
         })
     }
 
+    /**
+    Makes a view with a centered UIControl corresponding to the ControlModel.
+    Also sets up value change listener.
+     */
     func controlViewFromModel(controlModel: Control) -> ControlView {
         let controlView = ControlView()
         controlView.controlLabel.text = controlModel.title
@@ -68,7 +75,6 @@ class GameViewController: UIViewController {
             controlView.genericControl = LabeledSlider(names: possibleValues)
         }
         
-        uid = controlModel.uid
         controlView.genericControl?.tag = controlModel.uid
         controlView.genericControl?.addTarget(self, action: #selector(controlValueChanged(sender:)), for: .valueChanged)
         
@@ -76,17 +82,16 @@ class GameViewController: UIViewController {
     }
     
     @objc func controlValueChanged(sender: UIControl) {
-        instructionTimer?.invalidate()
         gameManager?.handleStateChange(of: sender)
     }
     
     @objc func updateTimer() {
-        if (instructionTimer != nil) && (instructionTimer?.isValid)! {
+        if (instructionTimer != nil) && instructionTimer!.isValid {
             currTime -= 0.01
             if currTime <= 0.0 {
                 print("timer expired")
                 instructionTimer?.invalidate()
-                gameManager?.processControlStateDict(dict: ["uid": uid!, "value": 0])
+                gameManager?.processTimerExpired()
             }
             else {
                 timerView?.setProgress(currTime/totalTime, animated: true)
@@ -95,9 +100,15 @@ class GameViewController: UIViewController {
         else {
             instructionTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.updateTimer), userInfo: nil, repeats: true)
             totalTime = 0
-            let gpa = (gameManager?.gpa)!
+            
+            guard let gpa = gameManager?.gpa else {
+                print("invalid gpa")
+                return
+            }
+            
+            //let gpa = (gameManager?.gpa)!
             if gpa > 3.0 {
-                totalTime = Float(arc4random_uniform(5)+3)
+                totalTime = Float(arc4random_uniform(5)+5) // < 5 seconds is too hard, lol
             }
             else if gpa > 2.0 {
                 totalTime = Float(arc4random_uniform(10)+3)
@@ -109,12 +120,16 @@ class GameViewController: UIViewController {
                 totalTime = Float(arc4random_uniform(20)+3)
             }
             currTime = totalTime
-            timerView.setProgress(1.0, animated: false)
+            timerView?.setProgress(1.0, animated: false)
         }
     }
 }
 
 extension GameViewController: GameManagerDelegate {
+    func gpaChanged(to gpa: Float) {
+        gpaLabel.text = "GPA: \(gpa)"
+    }
+    
     func controlsChanged(to controls: [Control]) {
         self.reloadControls()
     }
@@ -122,6 +137,9 @@ extension GameViewController: GameManagerDelegate {
     
     func instructionChanged(to command: String) {
         self.reloadInstruction()
+        
+        instructionTimer?.invalidate()
+        self.updateTimer()
     }
     
     
