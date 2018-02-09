@@ -276,11 +276,55 @@
                         <outlet property="gpaLabel" destination="GVo-YI-KlP" id="mDr-oD-Piu"/>
                         <outlet property="instructionLabel" destination="GR3-3u-t7B" id="hFX-xp-D3W"/>
                         <outlet property="timerView" destination="hze-4H-Ufe" id="evR-VR-Yaj"/>
+                        <segue destination="hZ4-3q-D3G" kind="show" identifier="gameOverSegue" id="332-Qx-8Sy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KX5-i6-zBL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2737" y="383"/>
+        </scene>
+        <!--Game Over View Controller-->
+        <scene sceneID="gJL-dg-IPl">
+            <objects>
+                <viewController storyboardIdentifier="gameOverViewController" id="hZ4-3q-D3G" customClass="GameOverViewController" customModule="BruinTeam" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xgd-MX-OLw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You won!!!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eKJ-cd-uZ2">
+                                <rect key="frame" x="87.5" y="283.5" width="200" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="etr-vs-Foi"/>
+                                    <constraint firstAttribute="width" constant="200" id="sWD-22-5fX"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GoW-nP-2qb">
+                                <rect key="frame" x="152" y="391" width="71" height="30"/>
+                                <state key="normal" title="Start Over"/>
+                                <connections>
+                                    <action selector="startOverButtonPressed:" destination="hZ4-3q-D3G" eventType="touchUpInside" id="4RE-Cg-s9H"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="eKJ-cd-uZ2" firstAttribute="centerX" secondItem="xgd-MX-OLw" secondAttribute="centerX" id="Wwc-nj-PdG"/>
+                            <constraint firstItem="GoW-nP-2qb" firstAttribute="top" secondItem="eKJ-cd-uZ2" secondAttribute="bottom" constant="7.5" id="fg3-TH-Q28"/>
+                            <constraint firstItem="eKJ-cd-uZ2" firstAttribute="centerY" secondItem="xgd-MX-OLw" secondAttribute="centerY" id="tLr-fX-ihC"/>
+                            <constraint firstItem="GoW-nP-2qb" firstAttribute="centerX" secondItem="xgd-MX-OLw" secondAttribute="centerX" id="yOY-Qp-roV"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="vBz-XZ-bR7"/>
+                    </view>
+                    <connections>
+                        <outlet property="gameOverLabel" destination="eKJ-cd-uZ2" id="Lv8-F1-81M"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2zr-tf-uJY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3532" y="383"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UFj-3r-ANp">

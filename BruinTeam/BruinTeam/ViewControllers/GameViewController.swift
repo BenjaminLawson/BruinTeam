@@ -122,6 +122,13 @@ class GameViewController: UIViewController {
 }
 
 extension GameViewController: GameManagerDelegate {
+    func gameEnded(withResult won: Bool) {
+        instructionTimer?.invalidate()
+        gameManager?.serviceManager.session.disconnect()
+        
+        performSegue(withIdentifier: "gameOverSegue", sender: nil)
+    }
+    
     func gpaChanged(to gpa: Float) {
         gpaLabel.text = "GPA: \(gpa)"
     }

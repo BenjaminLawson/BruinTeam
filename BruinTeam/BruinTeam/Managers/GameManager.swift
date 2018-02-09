@@ -5,6 +5,7 @@ protocol GameManagerDelegate {
     func controlsChanged(to controls: [Control])
     func instructionChanged(to instruction: String)
     func gpaChanged(to gpa: Float)
+    func gameEnded(withResult won: Bool)
 }
 
 class GameManager {
@@ -133,7 +134,18 @@ class GameManager {
      */
     func updateGPA(success: Bool) {
         gpa += success ? 0.1 : -0.1
-        serviceManager.send(event: .gpaUpdate, withObject: gpa as AnyObject, toPeers: serviceManager.peers)
+        
+        if gpa <= 0.0 {
+            serviceManager.send(event: .gameOver, withObject: ["won": false] as AnyObject, toPeers: serviceManager.peers)
+            delegate?.gameEnded(withResult: false)
+        }
+        else if gpa >= 4.0 {
+            serviceManager.send(event: .gameOver, withObject: ["won": true] as AnyObject, toPeers: serviceManager.peers)
+            delegate?.gameEnded(withResult: true)
+        }
+        else {
+            serviceManager.send(event: .gpaUpdate, withObject: gpa as AnyObject, toPeers: serviceManager.peers)
+        }
     }
     
     /**
@@ -192,46 +204,43 @@ extension GameManager: DiscoveryServiceManagerDelegate {
                 return
         }
         
-        switch event  {
-        case .newInstruction:
-            if let object = dict["object"] as? String {
-                DispatchQueue.main.async {
-                    self.currentInstruction = object
+        DispatchQueue.main.async {
+            switch event  {
+            case .newInstruction:
+                if let object = dict["object"] as? String {
+                        self.currentInstruction = object
                 }
-            }
-        case .controlState:
-            guard let stateDict = dict["object"] as? [String: Int] else {
-                print("Event.controlState guard failed")
-                return
-            }
-            
-            if isHost {
-                DispatchQueue.main.async {
-                    self.processControlStateDict(dict: stateDict)
+            case .controlState:
+                guard let stateDict = dict["object"] as? [String: Int] else { return }
+                
+                if self.isHost {
+                        self.processControlStateDict(dict: stateDict)
                 }
-            }
-        case .instructionExpired:
-            if isHost {
-                DispatchQueue.main.async {
-                    guard let instructionManager = self.instructionManager else { return }
-                    print("received instructionExpired event")
-                    instructionManager.deletePendingInstructions(for: peer)
-                    // generate new instruction
-                    let instruction = instructionManager.generateInstruction(forPeer: peer)
-                    // send new instruction to the client that owned the expired instruction
-                    self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+            case .instructionExpired:
+                if self.isHost {
+                        guard let instructionManager = self.instructionManager else { return }
+                        print("received instructionExpired event")
+                        instructionManager.deletePendingInstructions(for: peer)
+                        // generate new instruction
+                        let instruction = instructionManager.generateInstruction(forPeer: peer)
+                        // send new instruction to the client that owned the expired instruction
+                        self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
                 }
+            case .gpaUpdate:
+                guard let newGPA = dict["object"] as? Float else { return }
+                
+                    self.gpa = newGPA
+            case .gameOver:
+                guard let resultDict = dict["object"] as? [String: Bool],
+                    let result = resultDict["won"]
+                    else { return }
+                
+                if !self.isHost {
+                        self.delegate?.gameEnded(withResult: result)
+                }
+            default:
+                print("unrecognized event \(event)")
             }
-        case .gpaUpdate:
-            guard let newGPA = dict["object"] as? Float else {
-                print("invalid gpaUpdate object")
-                return
-            }
-            DispatchQueue.main.async {
-                self.gpa = newGPA
-            }
-        default:
-            print("unrecognized event \(event)")
         }
     }
     
