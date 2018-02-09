@@ -15,7 +15,13 @@ class HostViewController: UIViewController {
         connectionsTableView.delegate = self
 
         serviceManager.delegate = self
-        serviceManager.startBrowsing()
+        serviceManager.startAdvertising()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        serviceManager.stopAdvertising()
     }
 
     @IBAction func startButtonTouched(_ sender: Any) {
@@ -33,28 +39,24 @@ class HostViewController: UIViewController {
     }
 }
 
-
-
 // MARK: DiscoveryServiceManagerBrowserDelegate
 
 extension HostViewController: DiscoveryServiceManagerDelegate {
-    func receivedData(data: Data, fromPeer peer: MCPeerID) {
-        
-    }
-    
     func receivedInvite(peerID: MCPeerID, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
-        print("ignoring invite from \(peerID)")
-    }
-    
-    func foundPeer(peerID: MCPeerID) {
-        serviceManager.invitePeer(peerID: peerID)
+        // accept all invitations to connect
+        invitationHandler(true, serviceManager.session)
     }
     
     func peerChangedState(peerID: MCPeerID, state: MCSessionState) {
+        print("peerChangedState")
         DispatchQueue.main.async {
             self.connectionsTableView.reloadData()
         }
     }
+    
+    func lostPeer(peerID: MCPeerID) {}
+    func receivedData(data: Data, fromPeer peer: MCPeerID) {}
+    func foundPeer(peerID: MCPeerID) {}
 }
 
 extension HostViewController: UITableViewDataSource {

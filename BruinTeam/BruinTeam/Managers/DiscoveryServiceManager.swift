@@ -2,8 +2,12 @@ import Foundation
 import MultipeerConnectivity
 
 protocol DiscoveryServiceManagerDelegate {
+    // Browsing
     func foundPeer(peerID: MCPeerID)
+    func lostPeer(peerID: MCPeerID)
+    // Advertising
     func receivedInvite(peerID: MCPeerID, invitationHandler: @escaping (Bool, MCSession?) -> Void)
+    // Session
     func peerChangedState(peerID: MCPeerID, state: MCSessionState)
     func receivedData(data: Data, fromPeer peer: MCPeerID)
 }
@@ -14,6 +18,8 @@ class DiscoveryServiceManager: NSObject {
     
     let serviceAdvertiser: MCNearbyServiceAdvertiser
     let serviceBrowser: MCNearbyServiceBrowser
+    
+    var browserPeers = Set<MCPeerID>()
     
     var delegate: DiscoveryServiceManagerDelegate?
     
@@ -45,12 +51,24 @@ class DiscoveryServiceManager: NSObject {
         serviceBrowser.stopBrowsingForPeers()
     }
     
+    // MARK: Advertising
+    
     public func startAdvertising() {
         serviceAdvertiser.startAdvertisingPeer()
     }
     
+    public func stopAdvertising() {
+        serviceAdvertiser.stopAdvertisingPeer()
+    }
+    
+    // MARK: Browsing
+    
     public func startBrowsing() {
         serviceBrowser.startBrowsingForPeers()
+    }
+    
+    public func stopBrowsing() {
+        serviceBrowser.stopBrowsingForPeers()
     }
     
     public func invitePeer(peerID: MCPeerID) {
@@ -106,12 +124,14 @@ extension DiscoveryServiceManager: MCNearbyServiceBrowserDelegate {
     
     func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
         print("foundPeer: \(peerID)")
-        
+        browserPeers.insert(peerID)
         delegate?.foundPeer(peerID: peerID)
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         print("lostPeer: \(peerID)")
+        browserPeers.remove(peerID)
+        delegate?.lostPeer(peerID: peerID)
     }
 }
 

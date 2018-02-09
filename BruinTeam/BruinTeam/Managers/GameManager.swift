@@ -180,6 +180,7 @@ class GameManager {
 // MARK: DiscoveryServiceManagerDelegate
 
 extension GameManager: DiscoveryServiceManagerDelegate {
+    func lostPeer(peerID: MCPeerID) {}
     
     func receivedData(data: Data, fromPeer peer: MCPeerID) {
         print("game manager recieved data")

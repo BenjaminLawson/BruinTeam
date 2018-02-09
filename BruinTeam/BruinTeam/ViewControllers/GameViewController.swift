@@ -101,12 +101,8 @@ class GameViewController: UIViewController {
             instructionTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.updateTimer), userInfo: nil, repeats: true)
             totalTime = 0
             
-            guard let gpa = gameManager?.gpa else {
-                print("invalid gpa")
-                return
-            }
+            guard let gpa = gameManager?.gpa else { return }
             
-            //let gpa = (gameManager?.gpa)!
             if gpa > 3.0 {
                 totalTime = Float(arc4random_uniform(5)+5) // < 5 seconds is too hard, lol
             }

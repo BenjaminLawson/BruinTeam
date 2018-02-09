@@ -36,7 +36,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Join"/>
                                 <connections>
-                                    <segue destination="m4c-Zo-TO4" kind="show" id="Oym-MN-6j8"/>
+                                    <segue destination="pIj-V7-odz" kind="show" id="mbV-Kp-YHq"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -49,32 +49,77 @@
             </objects>
             <point key="canvasLocation" x="509.60000000000002" y="393.55322338830587"/>
         </scene>
-        <!--Join-->
-        <scene sceneID="EOC-uZ-8l6">
+        <!--Hosts-->
+        <scene sceneID="1PE-4J-ry2">
             <objects>
-                <viewController title="Join" id="m4c-Zo-TO4" customClass="ClientViewController" customModule="BruinTeam" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Kax-da-TWY">
+                <viewController title="Hosts" id="pIj-V7-odz" customClass="ClientViewController" customModule="BruinTeam" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LZW-er-cys">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jC-94-0bV">
-                                <rect key="frame" x="88" y="316" width="198" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iH0-1f-b3A">
+                                <rect key="frame" x="0.0" y="130" width="375" height="537"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a host to join!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxg-va-TQK">
+                                <rect key="frame" x="109" y="87" width="156" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="9f0-KS-yjq"/>
+                                    <constraint firstAttribute="width" constant="156" id="la3-xo-sw6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="iH0-1f-b3A" firstAttribute="leading" secondItem="Coy-d6-elz" secondAttribute="leading" id="3fR-5c-eIs"/>
+                            <constraint firstItem="iH0-1f-b3A" firstAttribute="top" secondItem="Zxg-va-TQK" secondAttribute="bottom" constant="22" id="6ur-t4-Hwe"/>
+                            <constraint firstItem="iH0-1f-b3A" firstAttribute="bottom" secondItem="Coy-d6-elz" secondAttribute="bottom" id="eEu-wY-Fga"/>
+                            <constraint firstItem="Zxg-va-TQK" firstAttribute="centerX" secondItem="LZW-er-cys" secondAttribute="centerX" id="ffj-aY-g0T"/>
+                            <constraint firstItem="iH0-1f-b3A" firstAttribute="trailing" secondItem="Coy-d6-elz" secondAttribute="trailing" id="fwh-J0-Y3M"/>
+                            <constraint firstItem="Zxg-va-TQK" firstAttribute="top" secondItem="Coy-d6-elz" secondAttribute="top" constant="23" id="sDP-13-Snq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Coy-d6-elz"/>
+                    </view>
+                    <connections>
+                        <outlet property="hostsTableView" destination="iH0-1f-b3A" id="5X6-cf-us2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Et-1c-ga0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1293.5999999999999" y="769.56521739130437"/>
+        </scene>
+        <!--Joining-->
+        <scene sceneID="EOC-uZ-8l6">
+            <objects>
+                <viewController storyboardIdentifier="joiningViewController" title="Joining" id="m4c-Zo-TO4" customClass="JoiningViewController" customModule="BruinTeam" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Kax-da-TWY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jC-94-0bV">
+                                <rect key="frame" x="122.5" y="318.5" width="129" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9jC-94-0bV" firstAttribute="centerY" secondItem="Kax-da-TWY" secondAttribute="centerY" id="DjF-Gz-jkp"/>
+                            <constraint firstItem="9jC-94-0bV" firstAttribute="centerX" secondItem="Kax-da-TWY" secondAttribute="centerX" id="TIi-6C-aqa"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="yRx-Sp-NYB"/>
                     </view>
                     <connections>
-                        <outlet property="statusLabel" destination="9jC-94-0bV" id="Ixa-BF-3P0"/>
+                        <outlet property="statusLabel" destination="9jC-94-0bV" id="Iuy-jc-ADw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D6x-5O-8Sj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1293.5999999999999" y="719.19040479760122"/>
+            <point key="canvasLocation" x="1918" y="770"/>
         </scene>
         <!--Host-->
         <scene sceneID="IWQ-uT-wOh">
@@ -221,7 +266,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KX5-i6-zBL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1972" y="421"/>
+            <point key="canvasLocation" x="2729" y="368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UFj-3r-ANp">
