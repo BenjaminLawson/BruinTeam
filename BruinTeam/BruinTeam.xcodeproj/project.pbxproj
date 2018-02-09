@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B52C0B5D202D6D6500C608E0 /* GameOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C0B5C202D6D6500C608E0 /* GameOverViewController.swift */; };
+		B52C0B5F202D74F400C608E0 /* GPAView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B52C0B5E202D74F400C608E0 /* GPAView.xib */; };
+		B52C0B61202D775C00C608E0 /* GPAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C0B60202D775C00C608E0 /* GPAView.swift */; };
 		B55F581A200DA2540008A9AF /* InstructionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F5819200DA2540008A9AF /* InstructionManager.swift */; };
 		B55F581C201565630008A9AF /* LabeledSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F581B201565630008A9AF /* LabeledSlider.swift */; };
 		B5790350200B1FEE005A3C9B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B579034F200B1FEE005A3C9B /* AppDelegate.swift */; };
@@ -30,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		B52C0B5C202D6D6500C608E0 /* GameOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
+		B52C0B5E202D74F400C608E0 /* GPAView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GPAView.xib; sourceTree = "<group>"; };
+		B52C0B60202D775C00C608E0 /* GPAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPAView.swift; sourceTree = "<group>"; };
 		B55F5819200DA2540008A9AF /* InstructionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionManager.swift; sourceTree = "<group>"; };
 		B55F581B201565630008A9AF /* LabeledSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledSlider.swift; sourceTree = "<group>"; };
 		B579034C200B1FEE005A3C9B /* BruinTeam.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BruinTeam.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,9 +126,11 @@
 		B5A75D5C200BF47F007151A3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B55F581B201565630008A9AF /* LabeledSlider.swift */,
 				B5A75D5A200BF479007151A3 /* ControlView.swift */,
 				B5A75D5D200BF492007151A3 /* ControlView.xib */,
-				B55F581B201565630008A9AF /* LabeledSlider.swift */,
+				B52C0B60202D775C00C608E0 /* GPAView.swift */,
+				B52C0B5E202D74F400C608E0 /* GPAView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -206,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B5A75D5E200BF492007151A3 /* ControlView.xib in Resources */,
+				B52C0B5F202D74F400C608E0 /* GPAView.xib in Resources */,
 				B579035A200B1FEE005A3C9B /* Main.storyboard in Resources */,
 				B5790357200B1FEE005A3C9B /* Assets.xcassets in Resources */,
 				B5790355200B1FEE005A3C9B /* LaunchScreen.storyboard in Resources */,
@@ -230,6 +237,7 @@
 				B5790368200B2A72005A3C9B /* ClientViewController.swift in Sources */,
 				B5AC657E200B4F0C00AE89DB /* GameViewController.swift in Sources */,
 				B5E03577200C13200043DAB7 /* ControlModel.swift in Sources */,
+				B52C0B61202D775C00C608E0 /* GPAView.swift in Sources */,
 				B5B33826202D544A00E965D0 /* JoiningViewController.swift in Sources */,
 				B5A75D5B200BF479007151A3 /* ControlView.swift in Sources */,
 				B579036E200B347D005A3C9B /* DiscoveryServiceManager.swift in Sources */,
