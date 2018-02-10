@@ -1,6 +1,11 @@
 import MultipeerConnectivity
 import GameKit
 
+enum GameStatus {
+    case InProgress
+    case GameOver
+}
+
 protocol GameManagerDelegate {
     func controlsChanged(to controls: [Control])
     func instructionChanged(to instruction: String)
@@ -13,6 +18,7 @@ class GameManager {
     var delegate: GameManagerDelegate?
     var instructionManager: InstructionManager?
     var isHost = false
+    var status: GameStatus = .InProgress
     
     /// this player's controls
     var controls: [Control]? {
@@ -41,7 +47,7 @@ class GameManager {
 
     init(serviceManager: DiscoveryServiceManager, isHost: Bool) {
         self.isHost = isHost
-        self.gpa = 3.0
+        self.gpa = 2.0 // starting GPA
         
         self.serviceManager = serviceManager
         self.serviceManager.delegate = self
@@ -119,32 +125,36 @@ class GameManager {
     func processControlStateDict(dict: [String: Int]) {
         if let instructionOwner = instructionManager?.applyStateDict(dict: dict) {
             print("control state change resolved valid instruction")
-            self.updateGPA(success: true)
-            notifyInstructionOwner(peer: instructionOwner)
+            if !updateGPA(success: true) {
+                // game didn't end
+                notifyInstructionOwner(peer: instructionOwner)
+            }
         }
         else {
             print("control state change did not resolve valid instruction")
-            self.updateGPA(success: false)
+            _ = self.updateGPA(success: false)
         }
     }
     
     /**
      Called when host processes a control change.
      - Warning: Only host should call.
+     - Returns: true if gpa caused game to end
      */
-    func updateGPA(success: Bool) {
+    func updateGPA(success: Bool) -> Bool {
         gpa += success ? 0.1 : -0.1
         
         if gpa <= 0.0 {
-            serviceManager.send(event: .gameOver, withObject: ["won": false] as AnyObject, toPeers: serviceManager.peers)
-            delegate?.gameEnded(withResult: false)
+            endGame(won: false)
+            return true
         }
         else if gpa >= 4.0 {
-            serviceManager.send(event: .gameOver, withObject: ["won": true] as AnyObject, toPeers: serviceManager.peers)
-            delegate?.gameEnded(withResult: true)
+            endGame(won: true)
+            return true
         }
         else {
             serviceManager.send(event: .gpaUpdate, withObject: gpa as AnyObject, toPeers: serviceManager.peers)
+            return false
         }
     }
     
@@ -171,10 +181,9 @@ class GameManager {
     }
     
     func processTimerExpired() {
-        // decrease gpa
-        updateGPA(success: false)
-        
         if isHost {
+            if updateGPA(success: false) { return }
+            
             guard let instructionManager = self.instructionManager else { return }
             // delete pendingInstruction for the control
             instructionManager.deletePendingInstructions(for: serviceManager.session.myPeerID)
@@ -187,6 +196,13 @@ class GameManager {
         }
     }
     
+    func endGame(won: Bool) {
+        if isHost {
+            serviceManager.send(event: .gameOver, withObject: ["won": won] as AnyObject, toPeers: serviceManager.peers)
+        }
+        status = .GameOver
+        delegate?.gameEnded(withResult: won)
+    }
 }
 
 // MARK: DiscoveryServiceManagerDelegate
@@ -204,6 +220,8 @@ extension GameManager: DiscoveryServiceManagerDelegate {
                 return
         }
         
+        print("[EVENT] \(event.rawValue)")
+        
         DispatchQueue.main.async {
             switch event  {
             case .newInstruction:
@@ -217,14 +235,17 @@ extension GameManager: DiscoveryServiceManagerDelegate {
                         self.processControlStateDict(dict: stateDict)
                 }
             case .instructionExpired:
+                print("received instructionExpired event")
                 if self.isHost {
-                        guard let instructionManager = self.instructionManager else { return }
-                        print("received instructionExpired event")
-                        instructionManager.deletePendingInstructions(for: peer)
-                        // generate new instruction
-                        let instruction = instructionManager.generateInstruction(forPeer: peer)
-                        // send new instruction to the client that owned the expired instruction
-                        self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
+                    if self.updateGPA(success: false) { return } // check for game end
+                    
+                    guard let instructionManager = self.instructionManager else { return }
+                    
+                    instructionManager.deletePendingInstructions(for: peer)
+                    let instruction = instructionManager.generateInstruction(forPeer: peer)
+                    
+                    // send new instruction to the client that owned the expired instruction
+                    self.serviceManager.send(event: .newInstruction, withObject: instruction as AnyObject, toPeers: [peer])
                 }
             case .gpaUpdate:
                 guard let newGPA = dict["object"] as? Float else { return }
@@ -232,12 +253,11 @@ extension GameManager: DiscoveryServiceManagerDelegate {
                     self.gpa = newGPA
             case .gameOver:
                 guard let resultDict = dict["object"] as? [String: Bool],
-                    let result = resultDict["won"]
+                    let result = resultDict["won"],
+                    !self.isHost
                     else { return }
                 
-                if !self.isHost {
-                        self.delegate?.gameEnded(withResult: result)
-                }
+                self.endGame(won: result)
             default:
                 print("unrecognized event \(event)")
             }

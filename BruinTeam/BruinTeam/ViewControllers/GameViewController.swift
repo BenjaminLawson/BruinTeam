@@ -3,9 +3,10 @@ import MultipeerConnectivity
 
 class GameViewController: UIViewController {
     @IBOutlet weak var instructionLabel: UILabel?
-    @IBOutlet weak var gpaLabel: UILabel!
+    //@IBOutlet weak var gpaLabel: UILabel!
     @IBOutlet weak var timerView: UIProgressView? // optional in case progress changed before view loaded
     @IBOutlet weak var controlStackView: UIStackView? // optional in case controls received before view loaded
+    @IBOutlet weak var gpaBarView: ProgressBarView!
     
     var gameManager: GameManager?
     
@@ -18,10 +19,13 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         timerView?.setProgress(100.0, animated: false)
+        gpaBarView.progress = CGFloat(gameManager!.gpa / 4.0)
         
         self.reloadControls()
         self.reloadInstruction()
     }
+    
+    override var prefersStatusBarHidden: Bool { return true }
     
     /**
      Inserts assigned controls into the control stackview.
@@ -94,7 +98,7 @@ class GameViewController: UIViewController {
                 gameManager?.processTimerExpired()
             }
             else {
-                timerView?.setProgress(currTime/totalTime, animated: true)
+                timerView?.setProgress(currTime/totalTime, animated: false)
             }
         }
         else {
@@ -109,11 +113,8 @@ class GameViewController: UIViewController {
             else if gpa > 2.0 {
                 totalTime = Float(arc4random_uniform(10)+3)
             }
-            else if gpa > 1.0 {
-                totalTime = Float(arc4random_uniform(15)+3)
-            }
             else {
-                totalTime = Float(arc4random_uniform(20)+3)
+                totalTime = Float(arc4random_uniform(15)+3)
             }
             currTime = totalTime
             timerView?.setProgress(1.0, animated: false)
@@ -123,24 +124,31 @@ class GameViewController: UIViewController {
 
 extension GameViewController: GameManagerDelegate {
     func gameEnded(withResult won: Bool) {
-        instructionTimer?.invalidate()
-        gameManager?.serviceManager.session.disconnect()
         
-        performSegue(withIdentifier: "gameOverSegue", sender: nil)
+        instructionTimer?.invalidate()
+        instructionTimer = nil
+        
+        // give game over packets have time to transmit
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.gameManager?.serviceManager.session.disconnect()
+        }
+        
+        let gameOverVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "gameOverViewController") as! GameOverViewController
+        gameOverVC.didWin = won
+        self.navigationController?.pushViewController(gameOverVC, animated: true)
     }
     
     func gpaChanged(to gpa: Float) {
-        gpaLabel.text = "GPA: \(gpa)"
+        gpaBarView.progress = CGFloat(gpa / 4.0)
     }
     
     func controlsChanged(to controls: [Control]) {
         self.reloadControls()
     }
     
-    
     func instructionChanged(to command: String) {
+        guard gameManager!.status != .GameOver else { return }
         self.reloadInstruction()
-        
         instructionTimer?.invalidate()
         self.updateTimer()
     }

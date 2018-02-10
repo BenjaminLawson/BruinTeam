@@ -13,6 +13,7 @@
     <customFonts key="customFonts">
         <array key="AmericanTypewriter.ttc">
             <string>AmericanTypewriter</string>
+            <string>AmericanTypewriter-Bold</string>
         </array>
     </customFonts>
     <scenes>
@@ -193,22 +194,54 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z2b-Au-be7">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z2b-Au-be7" customClass="ProgressBarView" customModule="BruinTeam" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="87"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GPA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVo-YI-KlP">
-                                        <rect key="frame" x="170.5" y="33" width="34" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCt-DM-Noj">
+                                        <rect key="frame" x="4" y="66" width="26.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIa-c9-kDn">
+                                        <rect key="frame" x="174" y="66" width="26.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="avh-uO-Iqg">
+                                        <rect key="frame" x="343.5" y="66" width="27.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <color key="textColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GPA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="axd-Wa-Jox">
+                                        <rect key="frame" x="168.5" y="0.0" width="39" height="22.5"/>
+                                        <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="18"/>
+                                        <color key="textColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
-                                <color key="backgroundColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.32852089410000002" blue="0.57488495110000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="GVo-YI-KlP" firstAttribute="centerX" secondItem="z2b-Au-be7" secondAttribute="centerX" id="Z6p-ro-2D2"/>
-                                    <constraint firstItem="GVo-YI-KlP" firstAttribute="centerY" secondItem="z2b-Au-be7" secondAttribute="centerY" id="g1r-K5-b77"/>
+                                    <constraint firstItem="aCt-DM-Noj" firstAttribute="leading" secondItem="z2b-Au-be7" secondAttribute="leading" constant="4" id="4II-3Y-z0I"/>
+                                    <constraint firstItem="NIa-c9-kDn" firstAttribute="centerX" secondItem="z2b-Au-be7" secondAttribute="centerX" id="4lZ-Q7-eKF"/>
+                                    <constraint firstItem="axd-Wa-Jox" firstAttribute="centerX" secondItem="z2b-Au-be7" secondAttribute="centerX" id="80a-7V-bUC"/>
+                                    <constraint firstAttribute="bottom" secondItem="avh-uO-Iqg" secondAttribute="bottom" id="QIU-1g-0qM"/>
+                                    <constraint firstItem="axd-Wa-Jox" firstAttribute="top" secondItem="z2b-Au-be7" secondAttribute="top" id="a4c-7N-r2j"/>
+                                    <constraint firstAttribute="trailing" secondItem="avh-uO-Iqg" secondAttribute="trailing" constant="4" id="crL-5L-01y"/>
+                                    <constraint firstAttribute="bottom" secondItem="NIa-c9-kDn" secondAttribute="bottom" id="jVv-Ub-ks5"/>
+                                    <constraint firstAttribute="bottom" secondItem="aCt-DM-Noj" secondAttribute="bottom" id="pzn-tK-pFZ"/>
                                     <constraint firstAttribute="height" constant="87" id="vwB-Tp-LzI"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="barColor">
+                                        <color key="value" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                        <real key="value" value="0.75"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b9N-N4-87a">
                                 <rect key="frame" x="0.0" y="151" width="375" height="12"/>
@@ -273,10 +306,9 @@
                     </view>
                     <connections>
                         <outlet property="controlStackView" destination="GOm-NR-y7B" id="A2k-NJ-k64"/>
-                        <outlet property="gpaLabel" destination="GVo-YI-KlP" id="mDr-oD-Piu"/>
+                        <outlet property="gpaBarView" destination="z2b-Au-be7" id="DbI-e9-tw6"/>
                         <outlet property="instructionLabel" destination="GR3-3u-t7B" id="hFX-xp-D3W"/>
                         <outlet property="timerView" destination="hze-4H-Ufe" id="evR-VR-Yaj"/>
-                        <segue destination="hZ4-3q-D3G" kind="show" identifier="gameOverSegue" id="332-Qx-8Sy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KX5-i6-zBL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -324,7 +356,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2zr-tf-uJY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3532" y="383"/>
+            <point key="canvasLocation" x="3367" y="383"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="UFj-3r-ANp">
