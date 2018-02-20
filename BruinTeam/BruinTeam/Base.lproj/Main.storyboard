@@ -79,14 +79,21 @@
                                 <rect key="frame" x="0.0" y="130" width="375" height="537"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a host to join!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxg-va-TQK">
-                                <rect key="frame" x="109" y="87" width="156" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxg-va-TQK">
+                                <rect key="frame" x="100.5" y="87" width="173" height="21"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Select a host to join!">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="17" name="AmericanTypewriter-Bold"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="iH0-1f-b3A" firstAttribute="leading" secondItem="Coy-d6-elz" secondAttribute="leading" id="3fR-5c-eIs"/>
                             <constraint firstItem="iH0-1f-b3A" firstAttribute="top" secondItem="Zxg-va-TQK" secondAttribute="bottom" constant="22" id="6ur-t4-Hwe"/>
@@ -114,13 +121,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Searching..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9jC-94-0bV">
-                                <rect key="frame" x="122.5" y="318.5" width="129" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <nil key="textColor"/>
+                                <rect key="frame" x="112.5" y="318" width="151" height="31"/>
+                                <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="25"/>
+                                <color key="textColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="9jC-94-0bV" firstAttribute="centerY" secondItem="Kax-da-TWY" secondAttribute="centerY" id="DjF-Gz-jkp"/>
                             <constraint firstItem="9jC-94-0bV" firstAttribute="centerX" secondItem="Kax-da-TWY" secondAttribute="centerX" id="TIi-6C-aqa"/>
