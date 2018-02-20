@@ -26,27 +26,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kd-QF-wnG">
-                                <rect key="frame" x="162.5" y="192.5" width="50" height="30"/>
+                                <rect key="frame" x="162.5" y="191.5" width="50" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="TKJ-b8-SAA"/>
                                 </constraints>
-                                <state key="normal" title="Host"/>
+                                <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="15"/>
+                                <state key="normal" title="Host">
+                                    <color key="titleColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="1k4-8r-ela" kind="show" id="y4j-C0-Wgy"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-7R-Bio">
-                                <rect key="frame" x="162" y="414.5" width="50" height="30"/>
+                                <rect key="frame" x="162" y="413.5" width="50" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="50" id="NVd-XU-CSS"/>
                                 </constraints>
-                                <state key="normal" title="Join"/>
+                                <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="15"/>
+                                <state key="normal" title="Join">
+                                    <color key="titleColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="pIj-V7-odz" kind="show" id="mbV-Kp-YHq"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="5Ou-7R-Bio" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="AJt-Ub-r2d"/>
                             <constraint firstItem="9kd-QF-wnG" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="FdD-jD-jMD"/>
