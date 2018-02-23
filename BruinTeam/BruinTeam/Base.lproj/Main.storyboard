@@ -23,8 +23,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kd-QF-wnG">
-                                <rect key="frame" x="157" y="237" width="60" height="43"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kd-QF-wnG">
+                                <rect key="frame" x="157" y="207" width="60" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="TKJ-b8-SAA"/>
                                 </constraints>
@@ -36,11 +36,11 @@
                                     <segue destination="1k4-8r-ela" kind="show" id="y4j-C0-Wgy"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="9ny-Ut-Ykl">
-                                <rect key="frame" x="142" y="288" width="90" height="90"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="9ny-Ut-Ykl">
+                                <rect key="frame" x="112" y="258" width="151" height="151"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-7R-Bio">
-                                <rect key="frame" x="157" y="386" width="60" height="43"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-7R-Bio">
+                                <rect key="frame" x="157" y="417" width="60" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="NVd-XU-CSS"/>
                                 </constraints>
