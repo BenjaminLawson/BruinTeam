@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qAy-sg-9xU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qAy-sg-9xU">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +23,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kd-QF-wnG">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hf4-xD-9Fk">
+                                <rect key="frame" x="112.5" y="258.5" width="150" height="150"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="9ny-Ut-Ykl">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="K7H-jS-FDP"/>
+                                    <constraint firstAttribute="width" constant="150" id="MEp-sc-YvC"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kd-QF-wnG">
                                 <rect key="frame" x="157" y="207" width="60" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="TKJ-b8-SAA"/>
@@ -36,10 +48,7 @@
                                     <segue destination="1k4-8r-ela" kind="show" id="y4j-C0-Wgy"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="9ny-Ut-Ykl">
-                                <rect key="frame" x="112" y="258" width="151" height="151"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-7R-Bio">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-7R-Bio">
                                 <rect key="frame" x="157" y="417" width="60" height="43"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="NVd-XU-CSS"/>
@@ -55,12 +64,12 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="5Ou-7R-Bio" firstAttribute="centerX" secondItem="9ny-Ut-Ykl" secondAttribute="centerX" id="Jn8-bS-yAH"/>
-                            <constraint firstItem="5Ou-7R-Bio" firstAttribute="top" secondItem="9ny-Ut-Ykl" secondAttribute="bottom" constant="8" id="Kic-vI-yMn"/>
-                            <constraint firstItem="9kd-QF-wnG" firstAttribute="centerX" secondItem="9ny-Ut-Ykl" secondAttribute="centerX" id="Rwz-Cw-shZ"/>
-                            <constraint firstItem="9ny-Ut-Ykl" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="UFR-jC-GHv"/>
-                            <constraint firstItem="9ny-Ut-Ykl" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="xQf-Q3-01b"/>
-                            <constraint firstItem="9ny-Ut-Ykl" firstAttribute="top" secondItem="9kd-QF-wnG" secondAttribute="bottom" constant="8" id="zUo-rL-7h6"/>
+                            <constraint firstItem="9kd-QF-wnG" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="5XB-Sz-YRa"/>
+                            <constraint firstItem="hf4-xD-9Fk" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Cbu-Uk-zYp"/>
+                            <constraint firstItem="5Ou-7R-Bio" firstAttribute="top" secondItem="hf4-xD-9Fk" secondAttribute="bottom" constant="8.5" id="D7R-7K-MFK"/>
+                            <constraint firstItem="5Ou-7R-Bio" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="TEC-ns-MBh"/>
+                            <constraint firstItem="hf4-xD-9Fk" firstAttribute="top" secondItem="9kd-QF-wnG" secondAttribute="bottom" constant="8.5" id="UI9-m1-Jud"/>
+                            <constraint firstItem="hf4-xD-9Fk" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="xWX-b7-9fp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
