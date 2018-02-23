@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qAy-sg-9xU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qAy-sg-9xU">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,45 +23,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="120" translatesAutoresizingMaskIntoConstraints="NO" id="toV-yx-Rp5">
-                                <rect key="frame" x="157.5" y="218.5" width="60" height="230"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kd-QF-wnG">
-                                        <rect key="frame" x="0.0" y="0.0" width="60" height="67"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="TKJ-b8-SAA"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="25"/>
-                                        <state key="normal" title="Host">
-                                            <color key="titleColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="1k4-8r-ela" kind="show" id="y4j-C0-Wgy"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-7R-Bio">
-                                        <rect key="frame" x="0.0" y="187" width="60" height="43"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="60" id="NVd-XU-CSS"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="25"/>
-                                        <state key="normal" title="Join">
-                                            <color key="titleColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="pIj-V7-odz" kind="show" id="mbV-Kp-YHq"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kd-QF-wnG">
+                                <rect key="frame" x="157" y="237" width="60" height="43"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="toV-yx-Rp5" secondAttribute="height" multiplier="5:19" id="AJm-Bx-1Gd"/>
+                                    <constraint firstAttribute="width" constant="60" id="TKJ-b8-SAA"/>
                                 </constraints>
-                            </stackView>
+                                <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="25"/>
+                                <state key="normal" title="Host">
+                                    <color key="titleColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="1k4-8r-ela" kind="show" id="y4j-C0-Wgy"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="9ny-Ut-Ykl">
+                                <rect key="frame" x="142" y="288" width="90" height="90"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ou-7R-Bio">
+                                <rect key="frame" x="157" y="386" width="60" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="NVd-XU-CSS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AmericanTypewriter-Bold" family="American Typewriter" pointSize="25"/>
+                                <state key="normal" title="Join">
+                                    <color key="titleColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="pIj-V7-odz" kind="show" id="mbV-Kp-YHq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="toV-yx-Rp5" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="jCB-9O-2MD"/>
-                            <constraint firstItem="toV-yx-Rp5" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="nzb-KW-CGD"/>
+                            <constraint firstItem="5Ou-7R-Bio" firstAttribute="centerX" secondItem="9ny-Ut-Ykl" secondAttribute="centerX" id="Jn8-bS-yAH"/>
+                            <constraint firstItem="5Ou-7R-Bio" firstAttribute="top" secondItem="9ny-Ut-Ykl" secondAttribute="bottom" constant="8" id="Kic-vI-yMn"/>
+                            <constraint firstItem="9kd-QF-wnG" firstAttribute="centerX" secondItem="9ny-Ut-Ykl" secondAttribute="centerX" id="Rwz-Cw-shZ"/>
+                            <constraint firstItem="9ny-Ut-Ykl" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="UFR-jC-GHv"/>
+                            <constraint firstItem="9ny-Ut-Ykl" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="xQf-Q3-01b"/>
+                            <constraint firstItem="9ny-Ut-Ykl" firstAttribute="top" secondItem="9kd-QF-wnG" secondAttribute="bottom" constant="8" id="zUo-rL-7h6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -419,4 +416,7 @@
             <point key="canvasLocation" x="-252" y="394"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Image" width="90" height="90"/>
+    </resources>
 </document>
