@@ -27,6 +27,7 @@
 		B5E03577200C13200043DAB7 /* ControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E03576200C13200043DAB7 /* ControlModel.swift */; };
 		B5E0357A200C1E200043DAB7 /* EventConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E03579200C1E200043DAB7 /* EventConstants.swift */; };
 		B5E0357F200C2DC90043DAB7 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E0357E200C2DC90043DAB7 /* GameManager.swift */; };
+		E4D280BC204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E4D280BB204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		B5E03576200C13200043DAB7 /* ControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlModel.swift; sourceTree = "<group>"; };
 		B5E03579200C1E200043DAB7 /* EventConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventConstants.swift; sourceTree = "<group>"; };
 		B5E0357E200C2DC90043DAB7 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
+		E4D280BB204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "argsound_alpha-bit.mp3"; path = "../../../Downloads/argsound_alpha-bit.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 		B5790343200B1FED005A3C9B = {
 			isa = PBXGroup;
 			children = (
+				E4D280BB204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 */,
 				B579034E200B1FEE005A3C9B /* BruinTeam */,
 				B579034D200B1FEE005A3C9B /* Products */,
 			);
@@ -212,6 +215,7 @@
 				B579035A200B1FEE005A3C9B /* Main.storyboard in Resources */,
 				B5790357200B1FEE005A3C9B /* Assets.xcassets in Resources */,
 				B5790355200B1FEE005A3C9B /* LaunchScreen.storyboard in Resources */,
+				E4D280BC204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
