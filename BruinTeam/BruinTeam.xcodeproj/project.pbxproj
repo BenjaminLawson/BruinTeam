@@ -18,6 +18,7 @@
 		B5790364200B2A26005A3C9B /* HostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5790363200B2A26005A3C9B /* HostViewController.swift */; };
 		B5790368200B2A72005A3C9B /* ClientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5790367200B2A72005A3C9B /* ClientViewController.swift */; };
 		B579036E200B347D005A3C9B /* DiscoveryServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B579036D200B347D005A3C9B /* DiscoveryServiceManager.swift */; };
+		B5A357822055DAC200A34D6E /* argsound_alpha-bit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B5A357812055DAC200A34D6E /* argsound_alpha-bit.mp3 */; };
 		B5A75D5B200BF479007151A3 /* ControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A75D5A200BF479007151A3 /* ControlView.swift */; };
 		B5A75D5E200BF492007151A3 /* ControlView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5A75D5D200BF492007151A3 /* ControlView.xib */; };
 		B5AC657E200B4F0C00AE89DB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AC657D200B4F0C00AE89DB /* GameViewController.swift */; };
@@ -27,7 +28,6 @@
 		B5E03577200C13200043DAB7 /* ControlModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E03576200C13200043DAB7 /* ControlModel.swift */; };
 		B5E0357A200C1E200043DAB7 /* EventConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E03579200C1E200043DAB7 /* EventConstants.swift */; };
 		B5E0357F200C2DC90043DAB7 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E0357E200C2DC90043DAB7 /* GameManager.swift */; };
-		E4D280BC204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E4D280BB204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +44,7 @@
 		B5790363200B2A26005A3C9B /* HostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostViewController.swift; sourceTree = "<group>"; };
 		B5790367200B2A72005A3C9B /* ClientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientViewController.swift; sourceTree = "<group>"; };
 		B579036D200B347D005A3C9B /* DiscoveryServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryServiceManager.swift; sourceTree = "<group>"; };
+		B5A357812055DAC200A34D6E /* argsound_alpha-bit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "argsound_alpha-bit.mp3"; sourceTree = "<group>"; };
 		B5A75D5A200BF479007151A3 /* ControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlView.swift; sourceTree = "<group>"; };
 		B5A75D5D200BF492007151A3 /* ControlView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ControlView.xib; sourceTree = "<group>"; };
 		B5AC657D200B4F0C00AE89DB /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -53,7 +54,6 @@
 		B5E03576200C13200043DAB7 /* ControlModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlModel.swift; sourceTree = "<group>"; };
 		B5E03579200C1E200043DAB7 /* EventConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventConstants.swift; sourceTree = "<group>"; };
 		B5E0357E200C2DC90043DAB7 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
-		E4D280BB204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "argsound_alpha-bit.mp3"; path = "../../../Downloads/argsound_alpha-bit.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +70,7 @@
 		B5790343200B1FED005A3C9B = {
 			isa = PBXGroup;
 			children = (
-				E4D280BB204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 */,
+				B5A357812055DAC200A34D6E /* argsound_alpha-bit.mp3 */,
 				B579034E200B1FEE005A3C9B /* BruinTeam */,
 				B579034D200B1FEE005A3C9B /* Products */,
 			);
@@ -215,7 +215,7 @@
 				B579035A200B1FEE005A3C9B /* Main.storyboard in Resources */,
 				B5790357200B1FEE005A3C9B /* Assets.xcassets in Resources */,
 				B5790355200B1FEE005A3C9B /* LaunchScreen.storyboard in Resources */,
-				E4D280BC204FAA1800FA3BE2 /* argsound_alpha-bit.mp3 in Resources */,
+				B5A357822055DAC200A34D6E /* argsound_alpha-bit.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
